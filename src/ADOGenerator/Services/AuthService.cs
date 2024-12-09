@@ -1,4 +1,5 @@
 ﻿using ADOGenerator.IServices;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
 using Newtonsoft.Json.Linq;
 using System;
@@ -14,13 +15,26 @@ namespace ADOGenerator.Services
 {
     public class AuthService : IAuthService
     {
-        public static readonly string clientId = "c5d3c380-cd7c-4822-a031-cde279164a19";
-        private static readonly string tenantId = "0c88fa98-b222-4fd8-9414-559fa424ce64";
-        public static readonly string[] scopes = new[] { "499b84ac-1321-427f-aa17-267ca6975798/.default" }; // Azure DevOps API Scope
+        public static string clientId = "";
+        private static string tenantId = "";
+        public static string[] scopes = new[] { "" }; // Azure DevOps API Scope
         public static readonly string authority = $"https://login.microsoftonline.com/{tenantId}";
+
+        static AuthService()
+        {
+            var configuration = new ConfigurationBuilder()
+                .AddJsonFile("appsettings.json")
+                .Build();
+
+            clientId = configuration["AppSettings:clientId"];
+            tenantId = configuration["AppSettings:tenantId"];
+            scopes = new[] { configuration["AppSettings:scopes"] };
+            authority = $"https://login.microsoftonline.com/{tenantId}";
+        }
 
         public async Task<AuthenticationResult> AcquireTokenAsync(IPublicClientApplication app)
         {
+
             return await app.AcquireTokenWithDeviceCode(scopes, deviceCodeCallback =>
             {
                 Console.WriteLine(deviceCodeCallback.Message);
@@ -79,39 +93,5 @@ namespace ADOGenerator.Services
                 return null;
             });
         }
-
-        //public async Task<string> GetProjectsAsync(string accessToken, string selectedAccountName)
-        //{
-        //    var projectsClient = new HttpClient();
-        //    projectsClient.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-        //    var projectsResponse = await projectsClient.GetAsync($"https://dev.azure.com/{selectedAccountName}/_apis/projects?api-version=6.0");
-        //    projectsResponse.EnsureSuccessStatusCode();
-        //    var projectsResponseBody = await projectsResponse.Content.ReadAsStringAsync();
-
-        //    var projectsJson = JObject.Parse(projectsResponseBody);
-        //    if (projectsJson["count"].Value<int>() > 0)
-        //    {
-        //        Console.WriteLine("Select a project:");
-        //        var projects = projectsJson["value"];
-        //        for (int i = 0; i < projects.Count(); i++)
-        //        {
-        //            Console.WriteLine($"{i + 1}. {projects[i]["name"]} (ID: {projects[i]["id"]})");
-        //        }
-        //        int selectedProjectIndex;
-        //        do
-        //        {
-        //            Console.Write("Enter the number of the project: ");
-        //        } while (!int.TryParse(Console.ReadLine(), out selectedProjectIndex) || selectedProjectIndex < 1 || selectedProjectIndex > projects.Count());
-        //        var selectedProjectId = projects[selectedProjectIndex - 1]["id"].ToString();
-        //        var selectedProjectName = projects[selectedProjectIndex - 1]["name"].ToString();
-        //        Console.WriteLine($"Selected project: {selectedProjectName} (ID: {selectedProjectId})");
-        //        return selectedProjectName;
-        //    }
-        //    else
-        //    {
-        //        Console.WriteLine("No projects found.");
-        //    }
-        //    return null;
-        //}
     }
 }
