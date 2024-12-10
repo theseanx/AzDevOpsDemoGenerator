@@ -37,10 +37,10 @@ jobs:
         run: cd src
 
       - name: Build with dotnet
-        run: dotnet build src/**.csproj -c Release
+        run: dotnet build src/**/*.csproj -c Release
 
       - name: Publish with dotnet
-        run: dotnet publish src/**.csproj -c Release -o ${{env.DOTNET_ROOT}}/AzDemoGenerator
+        run: dotnet publish src/**/*.csproj -c Release -o ${{env.DOTNET_ROOT}}/AzDemoGenerator
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v4
