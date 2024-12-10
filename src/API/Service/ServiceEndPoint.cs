@@ -25,7 +25,8 @@ namespace RestAPI.Service
 
                 using (var client = GetHttpClient())
                 {
-                    var jsonContent = new StringContent(json, Encoding.UTF8, "application/json");
+                    var sanitizedJson = Utility.SanitizeJson(json);
+                    var jsonContent = new StringContent(sanitizedJson, Encoding.UTF8, "application/json");
                     var method = new HttpMethod("POST");
 
                     var request = new HttpRequestMessage(method, project + "/_apis/distributedtask/serviceendpoints?api-version=" + _configuration.VersionNumber) { Content = jsonContent };
