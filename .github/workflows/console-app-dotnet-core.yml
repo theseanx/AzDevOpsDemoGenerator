@@ -61,7 +61,7 @@ jobs:
         run: cd src
         
       - name: Build with dotnet
-        run: dotnet build --configuration Release /*.sln
+        run: dotnet build /*.sln --configuration Release 
 
       - name: dotnet publish
         run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/AzDemoGenerator
