@@ -2870,6 +2870,7 @@ public static class Utility
         {
             jsonObject["password"] = "****";
         }
+        // Add more sanitization logic as needed
         return jsonObject.ToString();
     }
 }
