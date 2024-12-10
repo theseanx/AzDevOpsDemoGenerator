@@ -55,11 +55,12 @@ jobs:
       - name: PWD
         run: pwd |
               ls
-
         
       - name: Change to project directory
-        run: cd src |
-              ls
+        run: cd src
+      - name: ls
+        run: ls
+              
         
       - name: Build with dotnet
         run: dotnet build -c Release 
