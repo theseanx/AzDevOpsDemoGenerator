@@ -15,7 +15,7 @@ permissions:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: windows-latest
 
     steps:
       - uses: actions/checkout@v4
@@ -33,11 +33,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
-      - name: List current directory
-        run: |
-          pwd
-          ls
-
       - name: Change to project directory
         run: cd src
 
@@ -48,7 +43,7 @@ jobs:
         run: dotnet publish src/ADOGenerator.sln -c Release -o ${{env.DOTNET_ROOT}}/AzDemoGenerator
 
       - name: Upload artifact for deployment job
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: .net-app
           path: ${{env.DOTNET_ROOT}}/AzDemoGenerator
