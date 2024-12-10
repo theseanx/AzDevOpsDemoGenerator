@@ -23,6 +23,19 @@ namespace RestAPI
                 return message;
             }
         }
+
+        public static string SanitizeJson(string json)
+        {
+            // Implement sanitization logic to remove or mask sensitive information
+            // For example, remove password fields
+            var jsonObject = JObject.Parse(json);
+            if (jsonObject["password"] != null)
+            {
+                jsonObject["password"] = "****";
+            }
+            // Add more sanitization logic as needed
+            return jsonObject.ToString();
+        }
     }
 
 }

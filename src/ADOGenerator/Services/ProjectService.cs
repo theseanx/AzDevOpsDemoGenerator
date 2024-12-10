@@ -37,7 +37,6 @@ namespace ADOGenerator.Services
     public class ProjectService : IProjectService
     {
         private static readonly object objLock = new();
-        private static Dictionary<string, string> statusMessages;
 
         public bool isDefaultRepoTodetele = true;
         public string websiteUrl = string.Empty;
