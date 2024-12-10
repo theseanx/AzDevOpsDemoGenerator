@@ -58,7 +58,8 @@ jobs:
 
         
       - name: Change to project directory
-        run: cd src
+        run: cd src |
+              ls
         
       - name: Build with dotnet
         run: dotnet build -c Release 
