@@ -52,6 +52,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nuget-
 
+      - name: PWD
+        run: pwd |
+              ls
+
+        
+      - name: Change to project directory
+        run: cd AzDevOpsDemoGenerator/AzDevOpsDemoGenerator
+        
       - name: Build with dotnet
         run: dotnet build --configuration Release
 
