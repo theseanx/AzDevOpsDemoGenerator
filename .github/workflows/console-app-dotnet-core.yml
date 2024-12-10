@@ -38,11 +38,14 @@ jobs:
           pwd
           ls
 
+      - name: Change to project directory
+        run: cd src
+
       - name: Build with dotnet
-        run: dotnet build -c Release --source src
+        run: dotnet build src/ADOGenerator.sln -c Release
 
       - name: Publish with dotnet
-        run: dotnet publish -c Release -o ${{env.DOTNET_ROOT}}/AzDemoGenerator --source src
+        run: dotnet publish src/ADOGenerator.sln -c Release -o ${{env.DOTNET_ROOT}}/AzDemoGenerator
 
       - name: Upload artifact for deployment job
         uses: actions/upload-artifact@v3
