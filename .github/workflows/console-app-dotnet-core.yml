@@ -58,7 +58,7 @@ jobs:
 
         
       - name: Change to project directory
-        run: cd AzDevOpsDemoGenerator/AzDevOpsDemoGenerator
+        run: cd src
         
       - name: Build with dotnet
         run: dotnet build --configuration Release
