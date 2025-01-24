@@ -198,22 +198,24 @@ bool TryGetTemplateDetails(JToken groupwiseTemplates, string selectedTemplateNam
 
         foreach (var template in templates)
         {
-            if (template["Name"]?.ToString().Equals(selectedTemplateName, StringComparison.OrdinalIgnoreCase) != true) continue;
-
-            templateFolder = template["TemplateFolder"]?.ToString();
-            var templateFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", templateFolder);
-
-            if (!Directory.Exists(templateFolderPath))
+            if (template["Name"]?.ToString().Equals(selectedTemplateName, StringComparison.OrdinalIgnoreCase) != true)
+                continue;
+            else
             {
-                id.ErrorId().AddMessage($"Template '{selectedTemplateName}' is not found.");
-                return false;
+                templateFolder = template["TemplateFolder"]?.ToString();
+                var templateFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", templateFolder);
+
+                if (!Directory.Exists(templateFolderPath))
+                {
+                    id.ErrorId().AddMessage($"Template '{selectedTemplateName}' is not found.");
+                    return false;
+                }
+                id.AddMessage($"Template '{selectedTemplateName}' is present.");
+                return true;
             }
 
-            id.AddMessage($"Template '{selectedTemplateName}' is present.");
         }
-        return true;
     }
-
     return false;
 }
 
@@ -221,7 +223,7 @@ bool ValidateExtensions(string templateFolderPath, string id)
 {
     Init init = new Init();
 
-    var extensionsFilePath = Path.Combine(templateFolderPath, "Extensions.json");
+    var extensionsFilePath = Path.Combine(Directory.GetCurrentDirectory(),"Templates",templateFolderPath, "Extensions.json");
     if (!File.Exists(extensionsFilePath))
     {
         return false;
@@ -252,15 +254,15 @@ bool ValidateExtensions(string templateFolderPath, string id)
 
     if (extensions.HasValues)
     {
-        id.AddMessage("Do you want to proceed with this extension? (yes/no):");
+        id.AddMessage("Do you want to proceed with this extension? (yes/No): press enter to confirm");
         var userConfirmation = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(userConfirmation) && (userConfirmation.Equals("yes", StringComparison.OrdinalIgnoreCase) || userConfirmation.Equals("y", StringComparison.OrdinalIgnoreCase)))
+        if (string.IsNullOrWhiteSpace(userConfirmation) || (userConfirmation.Equals("yes", StringComparison.OrdinalIgnoreCase) || userConfirmation.Equals("y", StringComparison.OrdinalIgnoreCase)))
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            id.AddMessage("Agreed for license? (yes/no):");
+            id.AddMessage("Agreed for license? (yes/no): press enter to confirm");
             Console.ResetColor();
             var licenseConfirmation = Console.ReadLine();
-            if (!string.IsNullOrWhiteSpace(licenseConfirmation) && (licenseConfirmation.Equals("yes", StringComparison.OrdinalIgnoreCase) || licenseConfirmation.Equals("y", StringComparison.OrdinalIgnoreCase)))
+            if (string.IsNullOrWhiteSpace(licenseConfirmation) || (licenseConfirmation.Equals("yes", StringComparison.OrdinalIgnoreCase) || licenseConfirmation.Equals("y", StringComparison.OrdinalIgnoreCase)))
             {
                 id.AddMessage("Confirmed Extension installation");
                 return true;
