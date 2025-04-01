@@ -2,9 +2,9 @@
   "data": {
 
   },
-  "name": "Space Game - web - Release workflow-code",
+  "name": "Space Game - web-code",
   "type": "git",
-  "url": "https://dev.azure.com/sharplogic/Space Game - web - Docker/_git/Space Game - web - Release workflow",
+  "url": "https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {

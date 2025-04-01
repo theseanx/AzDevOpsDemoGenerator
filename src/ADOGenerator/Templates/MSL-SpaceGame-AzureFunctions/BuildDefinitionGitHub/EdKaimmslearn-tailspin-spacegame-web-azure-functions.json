@@ -7,20 +7,6 @@
       "batchChanges": false,
       "maxConcurrentBuildsPerBranch": 1,
       "triggerType": "continuousIntegration"
-    },
-    {
-      "settingsSourceType": 2,
-      "branchFilters": [
-        "+master"
-      ],
-      "forks": {
-        "enabled": true,
-        "allowSecrets": true
-      },
-      "pathFilters": [],
-      "requireCommentsForNonTeamMembersOnly": false,
-      "isCommentRequiredForPullRequest": false,
-      "triggerType": "pullRequest"
     }
   ],
   "properties": {},

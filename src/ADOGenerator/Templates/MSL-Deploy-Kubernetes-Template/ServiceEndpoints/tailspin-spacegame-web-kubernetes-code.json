@@ -2,14 +2,14 @@
   "data": {
 
   },
-  "name": "GitHub_9a905ff5",
+  "name": "Space Game - web - Release workflow-code",
   "type": "git",
   "url": "https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-kubernetes",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {
-      "username": "$GitUserName$",
-      "password": "$GitUserPassword$"
+      "username": "$username$",
+      "password": "$password$"
     }
   },
   "isReady": true
