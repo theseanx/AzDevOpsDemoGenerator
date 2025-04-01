@@ -72,6 +72,61 @@ namespace ADOGenerator.Services
             HttpResponseMessage response = projects.GetListOfProjects();
             return response;
         }
+
+        public HttpResponseMessage GetProjects(string accname, string pat, string authScheme)
+        {
+            string defaultHost = _configuration["AppSettings:DefaultHost"];
+            if (string.IsNullOrEmpty(defaultHost))
+            {
+                throw new InvalidOperationException("DefaultHost configuration is missing.");
+            }
+
+            string ProjectCreationVersion = _configuration["AppSettings:ProjectCreationVersion"];
+            if (ProjectCreationVersion == null)
+            {
+                throw new InvalidOperationException("ProjectCreationVersion configuration is missing.");
+            }
+
+            ADOConfiguration config = new ADOConfiguration() { AccountName = accname, PersonalAccessToken = pat, UriString = defaultHost + accname, VersionNumber = ProjectCreationVersion, _adoAuthScheme = authScheme };
+            Projects projects = new Projects(config);
+            HttpResponseMessage response = projects.GetListOfProjects();
+            return response;
+        }
+
+
+        public async Task<List<string>> SelectProject(string accessToken, HttpResponseMessage projectsData)
+        {
+            var projectsJson = JObject.Parse(await projectsData.Content.ReadAsStringAsync());
+            List<string> projectDetails = new List<string>();
+            return await Task.Run(() =>
+            {
+                if (projectsJson["count"].Value<int>() > 0)
+                {
+                    Console.WriteLine("Select an Project:");
+                    var projects = projectsJson["value"];
+                    for (int i = 0; i < projects.Count(); i++)
+                    {
+                        Console.WriteLine($"{i + 1}. {projects[i]["name"]} (ID: {projects[i]["id"]})");
+                    }
+                    Console.WriteLine("Please select a project that uses the standard Scrum or Agile process template");
+                    int selectedIndex;
+                    do
+                    {
+                        Console.Write("Enter the number of the project: ");
+                    } while (!int.TryParse(Console.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > projects.Count());
+
+                    projectDetails.Add(projects[selectedIndex - 1]["id"].ToString());
+                    projectDetails.Add(projects[selectedIndex - 1]["name"].ToString());
+                    return projectDetails;
+                }
+                else
+                {
+                    Console.WriteLine("No organizations found.");
+                }
+                return null;
+            });
+        }
+
         /// <summary>
         /// Get the path where we can file template related json files for selected template
         /// </summary>

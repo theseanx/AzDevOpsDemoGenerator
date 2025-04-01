@@ -1,6 +1,10 @@
-﻿namespace ADOGenerator.IServices
+﻿using ADOGenerator.Models;
+
+namespace ADOGenerator.IServices
 {
     public interface ITemplateService
     {
+        bool AnalyzeProject(Project model);
+        bool StartEnvironmentSetupProcess(Project model);
     }
 }
