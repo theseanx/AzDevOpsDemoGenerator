@@ -2,7 +2,7 @@
   "data": {
 
   },
-  "name": "Space Game - web - Release workflow-code",
+  "name": "tailspin-spacegame-web-kubernetes-code",
   "type": "git",
   "url": "https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-kubernetes",
   "authorization": {

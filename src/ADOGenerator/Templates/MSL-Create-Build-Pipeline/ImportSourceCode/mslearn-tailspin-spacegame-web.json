@@ -1,7 +1,7 @@
 {
   "parameters": {
     "gitSource": {
-      "url": "https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web",
+      "url": "https://github.com/jamcneil/mslearn-tailspin-spacegame-web",
       "branch": "main"  
     },
     "serviceEndpointId": "$mslearn-tailspin-spacegame-web-code$",

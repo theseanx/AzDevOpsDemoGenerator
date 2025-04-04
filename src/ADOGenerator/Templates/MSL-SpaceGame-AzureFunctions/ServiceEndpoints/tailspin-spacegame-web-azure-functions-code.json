@@ -2,9 +2,9 @@
   "data": {
 
   },
-  "name": "Space Game - web-code",
+  "name": "tailspin-spacegame-web-azure-functions-code",
   "type": "git",
-  "url": "https://github.com/jamcneil/mslearn-tailspin-spacegame-web",
+  "url": "https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-azure-functions",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {
