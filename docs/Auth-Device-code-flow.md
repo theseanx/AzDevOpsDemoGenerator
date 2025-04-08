@@ -46,6 +46,11 @@
     | vso.variablegroups_write  | Variable Groups (read, create)           | 
     | vso.work_full             | Work items (full)                        | 
 
+6. **Configure Authentication Advanced Settings**
+   - Navigate to **Manage** > **Authentication**.
+   - Under the **Advanced Settings** Section, Enable the **Allow Public Client Flows**.
+   ![image](Images/AdvancedSettings.png)
+   - **Save** the settings once changes done.
 ---
 
 ### **2. Configure the App Settings**
