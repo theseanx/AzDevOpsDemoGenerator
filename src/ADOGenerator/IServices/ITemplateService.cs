@@ -5,6 +5,6 @@ namespace ADOGenerator.IServices
     public interface ITemplateService
     {
         bool AnalyzeProject(Project model);
-        bool StartEnvironmentSetupProcess(Project model);
+        (bool,string) GenerateTemplateArtifacts(Project model);
     }
 }
