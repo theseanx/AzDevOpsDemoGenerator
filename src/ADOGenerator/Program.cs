@@ -4,6 +4,7 @@ using ADOGenerator.Models;
 using ADOGenerator.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Identity.Client;
+using Microsoft.VisualStudio.Services.DelegatedAuthorization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestAPI;
@@ -17,138 +18,183 @@ var configuration = new ConfigurationBuilder()
 Console.WriteLine("Welcome to Azure DevOps Demo Generator! This tool will help you generate a demo environment for Azure DevOps.");
 (string accessToken, string organizationName, string authScheme)? authenticationDetails = null;
 string authChoice = string.Empty;
+string currentPath = Directory.GetCurrentDirectory()
+    .Replace("bin\\Debug\\net8.0", "")
+    .Replace("bin\\Release\\net8.0", "")
+    .Replace("bin\\Debug", "")
+    .Replace("bin\\Release", "");
+
 do
 {
     string id = Guid.NewGuid().ToString().Split('-')[0];
+    Console.ForegroundColor = ConsoleColor.Cyan;
     Console.WriteLine("Do you want to create a new template or create a new project using the demo generator project template?");
     Console.WriteLine("1. Create a new project using the demo generator project template");
-    Console.WriteLine("2. Generate a new Artifacts using existing project.");
-    id.AddMessage("Enter the option number from the list of options above:");
+    Console.WriteLine("2. Generate new artifacts using an existing project.");
+    Console.ResetColor();
+    id.AddMessage(Environment.NewLine+"Enter the option number from the list of options above:");
     var userChoiceTemplate = Console.ReadLine();
 
-    if (userChoiceTemplate == "1")
+    switch (userChoiceTemplate)
     {
-        HandleNewProjectCreation(configuration,id);
-    }
-    else if (userChoiceTemplate == "2")
-    {
-        (bool isArtifactsGenerated,string template) = HandleArtifactGeneration(configuration,id);
-        if (isArtifactsGenerated)
-        {
-            id.AddMessage("Do you want to update the template settings? (yes/no): press enter to confirm");
-            var updateTemplateSettings = Console.ReadLine();
-            if (string.IsNullOrWhiteSpace(updateTemplateSettings) || updateTemplateSettings.Equals("yes", StringComparison.OrdinalIgnoreCase) || updateTemplateSettings.Equals("y", StringComparison.OrdinalIgnoreCase))
+        case "1":
+            HandleNewProjectCreation(configuration, id);
+            break;
+
+        case "2":
+            var (isArtifactsGenerated, template, model) = HandleArtifactGeneration(configuration, id);
+            if (isArtifactsGenerated)
             {
-                id.AddMessage("Updating template settings...");
-                var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "TemplateSetting.json");
-                if (!File.Exists(templatePath))
-                {
-                    id.ErrorId().AddMessage("TemplateSettings.json file not found.");
-                }
-                else
-                {
-                    var templateSettings = File.ReadAllText(templatePath);
-                    var json = JObject.Parse(templateSettings);
-                    var groups = json["Groups"] as JArray ?? new JArray(json["Groups"]);
-                    if (!groups.Any(g => g.ToString().Equals("Custom Templates", StringComparison.OrdinalIgnoreCase)))
-                    {
-                        var customTemplates = new JArray { "Custom Templates" };
-                        foreach (var item in customTemplates)
-                        {
-                            groups.Add(item);
-                        }
-                        json["Groups"] = groups;
-                    }
-                    else
-                    {
-                        id.AddMessage("Custom Templates group already exists.");
-                    }
-                    var groupwiseTemplates = json["GroupwiseTemplates"] as JArray ?? new JArray(json["GroupwiseTemplates"]);
-                    var newCustomTemplate = JObject.Parse(template);
-                    var groupwiseCustomTemplates = newCustomTemplate["GroupwiseTemplates"];
-                    if (groupwiseTemplates != null && groupwiseCustomTemplates != null)
-                    {
-                        foreach (var group in groupwiseCustomTemplates)
-                        {
-                            var groupName = group["Groups"]?.ToString();
-                            var existingGroup = groupwiseTemplates.FirstOrDefault(g => g["Groups"]?.ToString().Equals(groupName, StringComparison.OrdinalIgnoreCase) == true);
-                            if (existingGroup != null)
-                            {
-                                var existingTemplates = existingGroup["Template"] as JArray ?? new JArray(existingGroup["Template"]);
-                                var newTemplates = group["Template"] as JArray ?? new JArray(group["Template"]);
-                                var existingTemplateNames = existingTemplates.Select(t => t["Name"]?.ToString()).ToList();
-                                var newTemplateNames = newTemplates.Select(t => t["Name"]?.ToString()).ToList();
-                                var duplicateTemplates = newTemplateNames.Where(t => existingTemplateNames.Contains(t)).ToList();
-                                if (duplicateTemplates.Any())
-                                {
-                                    id.AddMessage($"Duplicate templates found: {string.Join(", ", duplicateTemplates)}. Skipping these templates.");
-                                    newTemplates = new JArray(newTemplates.Where(t => !duplicateTemplates.Contains(t["Name"]?.ToString())));
-                                }
-                                else
-                                {
-                                    id.AddMessage($"No duplicate templates found. Adding new templates.");
-                                }
-                                if (newTemplates != null)
-                                {
-                                    foreach (var templateCustom in newTemplates)
-                                    {
-                                        existingTemplates.Add(templateCustom);
-                                    }
-                                }
-                            }
-                            else
-                            {
-                                groupwiseTemplates.Add(group);
-                            }
-                        }
-                    }
-                    File.WriteAllText(templatePath, JsonConvert.SerializeObject(json,Formatting.Indented));
-                }
+                HandleTemplateAndArtifactsUpdate(template, id, model, currentPath);
             }
             else
             {
-                Console.WriteLine("Copy the generated template json and update the template settings manually.");
-                id.AddMessage("Template settings update skipped.");
+                id.ErrorId().AddMessage(Environment.NewLine + "Artifacts generation failed.");
             }
-            
-        }
-        else
-        {
-            id.ErrorId().AddMessage("Artifacts generation failed.");
-        }
+            break;
+
+        default:
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine("Invalid choice. Please select either 1 or 2.");
+            Console.ResetColor();
+            continue;
     }
-    else
-    {
-        Console.WriteLine("Invalid choice. Please select either 1 or 2.");
-        continue;
-    }
-    if (authenticationDetails.HasValue)
-    {
-        authenticationDetails = (authenticationDetails.Value.accessToken, null, authenticationDetails.Value.authScheme);
-    }
+
+    Console.ForegroundColor = ConsoleColor.Green;
     Console.WriteLine("Do you want to create another project? (yes/no): press enter to confirm");
+    Console.ResetColor();
     var createAnotherProject = Console.ReadLine();
     if (string.IsNullOrWhiteSpace(createAnotherProject) || createAnotherProject.Equals("yes", StringComparison.OrdinalIgnoreCase) || createAnotherProject.Equals("y", StringComparison.OrdinalIgnoreCase))
     {
-        createAnotherProject = "yes";
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine("Do you want to use the existing authentication details? (yes/no): press enter to confirm");
+        Console.ResetColor();
+        var useExistingAuth = Console.ReadLine();
+        if (string.IsNullOrWhiteSpace(useExistingAuth) || useExistingAuth.Equals("yes", StringComparison.OrdinalIgnoreCase) || useExistingAuth.Equals("y", StringComparison.OrdinalIgnoreCase))
+        {
+            if (authenticationDetails != null)
+            {
+                authenticationDetails = (authenticationDetails.Value.accessToken, null, authenticationDetails.Value.authScheme);
+            }
+        }
+        else
+        {
+            authenticationDetails = null;
+        }
+        continue;
+    }
+
+    id.AddMessage("Exiting the application.");
+    Environment.Exit(0);
+
+} while (true);
+return 0;
+
+void HandleTemplateAndArtifactsUpdate(string template, string id, Project model, string currentPath)
+{
+    id.AddMessage(Environment.NewLine+"Do you want to update the template settings and move the artifacts to the executable directory? (yes/no): press enter to confirm");
+    var updateTemplateSettings = Console.ReadLine();
+
+    if (string.IsNullOrWhiteSpace(updateTemplateSettings) || updateTemplateSettings.Equals("yes", StringComparison.OrdinalIgnoreCase) || updateTemplateSettings.Equals("y", StringComparison.OrdinalIgnoreCase))
+    {
+        id.AddMessage(Environment.NewLine + "Updating template settings...");
+        var templatePathBin = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "TemplateSetting.json");
+        var templatePathOriginal = Path.Combine(currentPath, "Templates", "TemplateSetting.json");
+
+        if (UpdateTemplateSettings(template, id, templatePathOriginal))
+        {
+            id.AddMessage("Template settings updated successfully at " + templatePathOriginal);
+        }
+        else
+        {
+            id.ErrorId().AddMessage("Template settings update failed at " + templatePathOriginal);
+        }
+
+        CopyFileIfExists(id,templatePathOriginal, templatePathBin);
+
+        id.AddMessage("Template settings copied to the current directory and updated successfully.");
+        id.AddMessage("Moving artifacts to the current directory...");
+
+        var artifactsPathOriginal = Path.Combine(currentPath, "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
+        var artifactsPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
+
+        MoveArtifacts(artifactsPathOriginal, artifactsPath, id);
     }
     else
     {
-        createAnotherProject = "no";
+        SkipTemplateAndArtifactsUpdate(id, currentPath, model, template);
     }
-    Console.WriteLine();
-    if (createAnotherProject.Equals("no", StringComparison.OrdinalIgnoreCase))
+}
+
+void CopyFileIfExists(string id,string sourcePath, string destinationPath)
+{
+    if (File.Exists(sourcePath))
     {
-        id.AddMessage("Exiting the application.");
-        Environment.Exit(0);
+        File.Copy(sourcePath, destinationPath, true);
     }
-} while (true);
-return 0;
+    else
+    {
+        Console.ForegroundColor = ConsoleColor.Green;
+        id.AddMessage($"Source file '{sourcePath}' does not exist. Creating a new file at the destination.");
+        string fileContents = File.ReadAllText(sourcePath);
+        File.WriteAllText(destinationPath, fileContents);
+        id.AddMessage($"New file created at '{destinationPath}'.");
+        Console.ResetColor();
+    }
+}
+
+void MoveArtifacts(string sourcePath, string destinationPath, string id)
+{
+    if (Directory.Exists(sourcePath))
+    {
+        if (Directory.Exists(destinationPath))
+        {
+            Directory.Delete(destinationPath, true);
+        }
+        Directory.CreateDirectory(destinationPath);
+
+        foreach (var directory in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+        {
+            var relativePath = Path.GetRelativePath(sourcePath, directory);
+            var destinationDirectory = Path.Combine(destinationPath, relativePath);
+            Directory.CreateDirectory(destinationDirectory);
+        }
+
+        foreach (var file in Directory.GetFiles(sourcePath, "*", SearchOption.AllDirectories))
+        {
+            var relativePath = Path.GetRelativePath(sourcePath, file);
+            var destinationFile = Path.Combine(destinationPath, relativePath);
+            File.Copy(file, destinationFile, true);
+        }
+
+        id.AddMessage("Artifacts moved to the current directory.");
+    }
+    else
+    {
+        id.ErrorId().AddMessage("Artifacts directory not found at " + sourcePath);
+    }
+}
+
+void SkipTemplateAndArtifactsUpdate(string id, string currentPath, Project model, string template)
+{
+    var templatePathBin = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "TemplateSetting.json");
+    var artifactsPathOriginal = Path.Combine(currentPath, "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
+    var artifactsPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
+    Console.ForegroundColor = ConsoleColor.Cyan;
+    id.AddMessage(Environment.NewLine+template);
+    Console.ResetColor();
+    Console.ForegroundColor = ConsoleColor.Green;
+    id.AddMessage("Copy the generated template JSON and update the template settings manually in the following file location: " + templatePathBin);
+    id.AddMessage("Template settings update and copying artifacts skipped.");
+    id.AddMessage("Copy the generated artifacts directory from " + artifactsPathOriginal + " and update the artifacts manually in the following directory location: " + artifactsPath);
+    Console.ResetColor();
+}
+
 
 void HandleNewProjectCreation(IConfiguration configuration, string id)
 {
     Init init = new Init();
-    id.AddMessage("Template Details");
+    id.AddMessage(Environment.NewLine+"Template Details");
 
     var templatePath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "TemplateSetting.json");
     if (!File.Exists(templatePath))
@@ -195,20 +241,18 @@ void HandleNewProjectCreation(IConfiguration configuration, string id)
     CreateProjectEnvironment(project);
 }
 
-(bool,string) HandleArtifactGeneration(IConfiguration configuration, string id)
+(bool,string,Project) HandleArtifactGeneration(IConfiguration configuration, string id)
 {
     Init init = new Init();
-    id.AddMessage("Template Details");
-
     var (accessToken, organizationName, authScheme) = AuthenticateUser(init, id);
-    if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(organizationName)) return (false, string.Empty);
+    if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(organizationName)) return (false, string.Empty,null);
 
     IProjectService projService = new ProjectService(configuration);
     var projects = projService.GetProjects(organizationName, accessToken, authScheme);
     var projectDetails = projService.SelectProject(accessToken, projects).Result;
 
     var projectName = projectDetails[1];
-    if (string.IsNullOrWhiteSpace(projectName)) return (false,string.Empty);
+    if (string.IsNullOrWhiteSpace(projectName)) return (false, string.Empty, null);
 
     var model = new Project
     {
@@ -230,26 +274,28 @@ void HandleNewProjectCreation(IConfiguration configuration, string id)
     {
         model.id.ErrorId().AddMessage("Artifacts analysis failed.");
     }
-    Console.WriteLine("Do you want to create artifacts yes/no:");
+    Console.ForegroundColor = ConsoleColor.Green;
+    Console.WriteLine(Environment.NewLine+"Do you want to create artifacts yes/no:");
+    Console.ResetColor();
     string response = Console.ReadLine();
     if (response == "yes")
     {
-        (bool isArtifactsGenerated, string template) = templateService.GenerateTemplateArtifacts(model);
+        (bool isArtifactsGenerated, string template, string templateLocation) = templateService.GenerateTemplateArtifacts(model);
         if(isArtifactsGenerated)
         {
-            model.id.AddMessage("Artifacts generated successfully.");
-            return (true, template);
+            model.id.AddMessage(Environment.NewLine+"Artifacts has been generated sccessfully at the location: " + templateLocation);
+            return (true, template,model);
         }
         else
         {
-            model.id.ErrorId().AddMessage("Artifacts generation failed.");
+            model.id.ErrorId().AddMessage(Environment.NewLine + "Artifacts generation failed.");
         }
     }
     else
     {
-        model.id.AddMessage("Artifacts generation skipped.");
+        model.id.AddMessage(Environment.NewLine + "Artifacts generation skipped.");
     }
-    return (false, string.Empty);
+    return (false, string.Empty, null);
 }
 
 JToken LoadTemplates(string templatePath, string id)
@@ -260,7 +306,7 @@ JToken LoadTemplates(string templatePath, string id)
 
     if (groupwiseTemplates == null)
     {
-        id.ErrorId().AddMessage("No templates found.");
+        id.ErrorId().AddMessage(Environment.NewLine + "No templates found.");
         return null;
     }
 
@@ -275,11 +321,13 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
     foreach (var group in groupwiseTemplates)
     {
         var groupName = group["Groups"]?.ToString();
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine(groupName);
-
+        Console.ResetColor();
         var templates = group["Template"];
         if (templates != null)
         {
+            Console.ForegroundColor = ConsoleColor.Yellow;
             foreach (var template in templates)
             {
                 var templateName = template["Name"]?.ToString();
@@ -287,13 +335,14 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
                 templateDictionary.Add(templateIndex, templateName);
                 templateIndex++;
             }
+            Console.ResetColor();
         }
     }
 
-    id.AddMessage("Enter the template number from the list of templates above:");
+    id.AddMessage(Environment.NewLine+"Enter the template number from the list of templates above:");
     if (!int.TryParse(Console.ReadLine(), out var selectedTemplateNumber) || !templateDictionary.TryGetValue(selectedTemplateNumber, out var selectedTemplateName))
     {
-        id.AddMessage("Invalid template number entered.");
+        id.AddMessage(Environment.NewLine+"Invalid template number entered.");
         return null;
     }
 
@@ -302,7 +351,10 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
 (string accessToken, string organizationName, string authScheme) AuthenticateUser(Init init, string id)
 {
     string organizationName = string.Empty;
-    if (authenticationDetails.HasValue)
+    if (authenticationDetails.HasValue &&
+       (!string.IsNullOrWhiteSpace(authenticationDetails.Value.organizationName) ||
+        !string.IsNullOrWhiteSpace(authenticationDetails.Value.accessToken) ||
+        !string.IsNullOrWhiteSpace(authenticationDetails.Value.authScheme)))
     {
         if (string.IsNullOrWhiteSpace(authenticationDetails.Value.organizationName))
         {
@@ -313,16 +365,16 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
                 var organizations = authService.GetOrganizationsAsync(authenticationDetails.Value.accessToken, memberId).Result;
                 organizationName = authService.SelectOrganization(authenticationDetails.Value.accessToken, organizations).Result;
             }
-            else if(authChoice == "2")
+            else if (authChoice == "2")
             {
-                id.AddMessage("Enter your Azure DevOps organization name:");
+                id.AddMessage(Environment.NewLine + "Enter your Azure DevOps organization name:");
                 organizationName = Console.ReadLine();
             }
             authenticationDetails = (authenticationDetails.Value.accessToken, organizationName, authenticationDetails.Value.authScheme);
         }
         return authenticationDetails.Value;
     }
-    id.AddMessage("Choose authentication method: 1. Device Login using AD auth 2. Personal Access Token (PAT)");
+    id.AddMessage(Environment.NewLine + "Choose authentication method: 1. Device Login using AD auth 2. Personal Access Token (PAT)");
     authChoice = Console.ReadLine();
 
     string accessToken = string.Empty;
@@ -365,10 +417,10 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
     }
     else if (authChoice == "2")
     {
-        id.AddMessage("Enter your Azure DevOps organization name:");
+        id.AddMessage(Environment.NewLine + "Enter your Azure DevOps organization name:");
         organizationName = Console.ReadLine();
 
-        id.AddMessage("Enter your Azure DevOps personal access token:");
+        id.AddMessage(Environment.NewLine + "Enter your Azure DevOps personal access token:");
         accessToken = init.ReadSecret();
 
         authScheme = "Basic";
@@ -383,16 +435,16 @@ string GetValidProjectName(Init init, string id)
     string projectName = "";
     do
     {
-        id.AddMessage("Enter the new project name:");
+        id.AddMessage(Environment.NewLine + "Enter the new project name:");
         projectName = Console.ReadLine();
         if (!init.CheckProjectName(projectName))
         {
-            id.ErrorId().AddMessage("Validation error: Project name is not valid.");
-            id.AddMessage("Do you want to try with a valid project name or exit? (type 'retry' to try again or 'exit' to quit):");
+            id.ErrorId().AddMessage(Environment.NewLine+"Validation error: Project name is not valid.");
+            id.AddMessage(Environment.NewLine + "Do you want to try with a valid project name or exit? (type 'retry' to try again or 'exit' to quit):");
             var userChoice = Console.ReadLine();
             if (userChoice?.Equals("exit", StringComparison.OrdinalIgnoreCase) == true)
             {
-                id.AddMessage("Exiting the application.");
+                id.AddMessage(Environment.NewLine + "Exiting the application.");
                 Environment.Exit(1);
             }
             projectName = "";
@@ -470,23 +522,23 @@ bool ValidateExtensions(string templateFolderPath, string id)
 
     if (extensions.HasValues)
     {
-        id.AddMessage("Do you want to proceed with this extension? (yes/No): press enter to confirm");
+        id.AddMessage(Environment.NewLine + "Do you want to proceed with this extension? (yes/No): press enter to confirm");
         var userConfirmation = Console.ReadLine();
         if (string.IsNullOrWhiteSpace(userConfirmation) || (userConfirmation.Equals("yes", StringComparison.OrdinalIgnoreCase) || userConfirmation.Equals("y", StringComparison.OrdinalIgnoreCase)))
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
-            id.AddMessage("Agreed for license? (yes/no): press enter to confirm");
+            id.AddMessage(Environment.NewLine + "Agreed for license? (yes/no): press enter to confirm");
             Console.ResetColor();
             var licenseConfirmation = Console.ReadLine();
             if (string.IsNullOrWhiteSpace(licenseConfirmation) || (licenseConfirmation.Equals("yes", StringComparison.OrdinalIgnoreCase) || licenseConfirmation.Equals("y", StringComparison.OrdinalIgnoreCase)))
             {
-                id.AddMessage("Confirmed Extension installation");
+                id.AddMessage(Environment.NewLine + "Confirmed Extension installation");
                 return true;
             }
         }
         else
         {
-            id.AddMessage("Extension installation is not confirmed.");
+            id.AddMessage(Environment.NewLine + "Extension installation is not confirmed.");
         }
     }
 
@@ -500,10 +552,98 @@ void CreateProjectEnvironment(Project model)
     var result = projectService.CreateProjectEnvironment(model);
     if (result)
     {
+        Console.ForegroundColor = ConsoleColor.Green;
         Console.WriteLine("Project created successfully.");
+        Console.ResetColor();
     }
     else
     {
+        Console.ForegroundColor = ConsoleColor.Red;
         Console.WriteLine("Project creation failed.");
+        Console.ResetColor();
+    }
+}
+bool UpdateTemplateSettings(string template, string id, string templatePath)
+{
+    if (!File.Exists(templatePath))
+    {
+        id.ErrorId().AddMessage(Environment.NewLine+"TemplateSettings.json file not found at " + templatePath);
+        return false;
+    }
+
+    var templateSettings = File.ReadAllText(templatePath);
+    var json = JObject.Parse(templateSettings);
+
+    UpdateGroups(json, id);
+    UpdateGroupwiseTemplates(json, template, id);
+
+    File.WriteAllText(templatePath, JsonConvert.SerializeObject(json, Formatting.Indented));
+    return true;
+}
+
+void UpdateGroups(JObject json, string id)
+{
+    var groups = json["Groups"] as JArray ?? new JArray(json["Groups"]);
+    if (!groups.Any(g => g.ToString().Equals("Custom Templates", StringComparison.OrdinalIgnoreCase)))
+    {
+        var customTemplates = new JArray { "Custom Templates" };
+        foreach (var item in customTemplates)
+        {
+            groups.Add(item);
+        }
+        json["Groups"] = groups;
+    }
+    else
+    {
+        id.AddMessage("Custom Templates group already exists.");
+    }
+}
+
+void UpdateGroupwiseTemplates(JObject json, string template, string id)
+{
+    var groupwiseTemplates = json["GroupwiseTemplates"] as JArray ?? new JArray(json["GroupwiseTemplates"]);
+    var newCustomTemplate = JObject.Parse(template);
+    var groupwiseCustomTemplates = newCustomTemplate["GroupwiseTemplates"];
+
+    if (groupwiseTemplates != null && groupwiseCustomTemplates != null)
+    {
+        foreach (var group in groupwiseCustomTemplates)
+        {
+            var groupName = group["Groups"]?.ToString();
+            var existingGroup = groupwiseTemplates.FirstOrDefault(g => g["Groups"]?.ToString().Equals(groupName, StringComparison.OrdinalIgnoreCase) == true);
+
+            if (existingGroup != null)
+            {
+                MergeTemplates(existingGroup, group, id);
+            }
+            else
+            {
+                groupwiseTemplates.Add(group);
+            }
+        }
+    }
+}
+
+void MergeTemplates(JToken existingGroup, JToken newGroup, string id)
+{
+    var existingTemplates = existingGroup["Template"] as JArray ?? new JArray(existingGroup["Template"]);
+    var newTemplates = newGroup["Template"] as JArray ?? new JArray(newGroup["Template"]);
+
+    var existingTemplateNames = existingTemplates.Select(t => t["Name"]?.ToString()).ToList();
+    var newTemplateNames = newTemplates.Select(t => t["Name"]?.ToString()).ToList();
+
+    var duplicateTemplates = newTemplateNames.Where(t => existingTemplateNames.Contains(t)).ToList();
+    if (duplicateTemplates.Any())
+    {
+        id.AddMessage($"Duplicate templates found: {string.Join(", ", duplicateTemplates)}. Skipping these templates.");
+        newTemplates = new JArray(newTemplates.Where(t => !duplicateTemplates.Contains(t["Name"]?.ToString())));
+    }
+    else
+    {
+        id.AddMessage($"No duplicate templates found. Adding new templates.");
+    }
+    foreach (var templateCustom in newTemplates)
+    {
+        existingTemplates.Add(templateCustom);
     }
 }

@@ -69,17 +69,23 @@ namespace ADOGenerator.Services
             {
                 if (accountsJson["count"].Value<int>() > 0)
                 {
-                    Console.WriteLine("Select an organization:");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(Environment.NewLine + "Select an organization:");
+                    Console.ResetColor();
                     var accounts = accountsJson["value"];
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     for (int i = 0; i < accounts.Count(); i++)
                     {
                         Console.WriteLine($"{i + 1}. {accounts[i]["accountName"]} (ID: {accounts[i]["accountId"]})");
                     }
+                    Console.ResetColor();
 
                     int selectedIndex;
                     do
                     {
-                        Console.Write("Enter the number of the organization: ");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write(Environment.NewLine + "Enter the number of the organization: ");
+                        Console.ResetColor();
                     } while (!int.TryParse(Console.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > accounts.Count());
 
                     var selectedAccountId = accounts[selectedIndex - 1]["accountId"].ToString();

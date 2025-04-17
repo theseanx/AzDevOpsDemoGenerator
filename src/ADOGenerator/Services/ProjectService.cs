@@ -102,17 +102,25 @@ namespace ADOGenerator.Services
             {
                 if (projectsJson["count"].Value<int>() > 0)
                 {
-                    Console.WriteLine("Select an Project:");
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine(Environment.NewLine + "Select an Project:");
+                    Console.ResetColor();
                     var projects = projectsJson["value"];
+                    Console.ForegroundColor = ConsoleColor.Yellow;
                     for (int i = 0; i < projects.Count(); i++)
                     {
                         Console.WriteLine($"{i + 1}. {projects[i]["name"]} (ID: {projects[i]["id"]})");
                     }
+                    Console.ResetColor();
+                    Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Please select a project that uses the standard Scrum or Agile process template");
+                    Console.ResetColor();
                     int selectedIndex;
                     do
                     {
-                        Console.Write("Enter the number of the project: ");
+                        Console.ForegroundColor= ConsoleColor.Green;
+                        Console.Write(Environment.NewLine+"Enter the number of the project: ");
+                        Console.ResetColor();
                     } while (!int.TryParse(Console.ReadLine(), out selectedIndex) || selectedIndex < 1 || selectedIndex > projects.Count());
 
                     projectDetails.Add(projects[selectedIndex - 1]["id"].ToString());
@@ -121,7 +129,9 @@ namespace ADOGenerator.Services
                 }
                 else
                 {
+                    Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("No organizations found.");
+                    Console.ResetColor();
                 }
                 return null;
             });

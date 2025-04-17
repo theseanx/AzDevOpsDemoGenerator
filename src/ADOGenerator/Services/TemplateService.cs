@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using RestAPI.Extractor;
 using RestAPI.ProjectsAndTeams;
 using RestAPI;
+using ADOGenerator;
 
 public class TemplateService : ITemplateService
 {
@@ -53,49 +54,56 @@ public class TemplateService : ITemplateService
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error during project analysis: " + ex.Message);
+            model.id.ErrorId().AddMessage("Error during project analysis: " + ex.Message);
             return false;
         }
     }
 
-    public (bool,string) GenerateTemplateArtifacts(Project model)
+    public (bool,string,string) GenerateTemplateArtifacts(Project model)
     {
         try
         {
             string[] createdTemplate = extractorService.GenerateTemplateArifacts(model);
             if (createdTemplate == null || createdTemplate.Length == 0)
             {
-                Console.WriteLine("No artifacts were generated.");
-                return (false, string.Empty); // No artifacts generated
+                model.id.AddMessage("No artifacts were generated.");
+                return (false, string.Empty,string.Empty); // No artifacts generated
             }
             string template = createdTemplate[1];
-            return (true,template); // Artifact generation completed successfully
+            string templateLocation = createdTemplate[2];
+            return (true,template, templateLocation); // Artifact generation completed successfully
         }
         catch (Exception ex)
         {
-            Console.WriteLine("Error during artifact generation: " + ex.Message);
-            return (false,string.Empty); // Artifact generation failed
+            model.id.ErrorId().AddMessage("Error during artifact generation: " + ex.Message);
+            return (false, string.Empty, string.Empty); // Artifact generation failed
         }
     }
 
     private void LogAnalysisResults(Project model, ExtractorAnalysis analysis)
     {
-        Console.WriteLine("Analysis of the project");
-        Console.WriteLine("Project Name: " + model.ProjectName);
-        Console.WriteLine("Process Template Type: " + model.ProcessTemplate);
-        Console.WriteLine("Teams Count: " + analysis.teamCount);
-        Console.WriteLine("Iterations Count: " + analysis.IterationCount);
-        Console.WriteLine("Work Items Count: ");
-        foreach (var item in analysis.WorkItemCounts)
+        model.id.AddMessage("Analysis of the project");
+        model.id.AddMessage("Project Name: " + model.ProjectName);
+        model.id.AddMessage("Process Template Type: " + model.ProcessTemplate);
+        model.id.AddMessage("Teams Count: " + analysis.teamCount);
+        model.id.AddMessage("Iterations Count: " + analysis.IterationCount);
+        if(analysis.WorkItemCounts.Count > 0)
         {
-            Console.WriteLine(item.Key + " : " + item.Value);
+            model.id.AddMessage("Work Items Count: ");
+            foreach (var item in analysis.WorkItemCounts)
+            {
+                model.id.AddMessage(item.Key + " : " + item.Value);
+            }
         }
-        Console.WriteLine("Build Definitions Count: " + analysis.BuildDefCount);
-        Console.WriteLine("Release Definitions Count: " + analysis.ReleaseDefCount);
-        Console.WriteLine("Errors: ");
-        foreach (var item in analysis.ErrorMessages)
+        model.id.AddMessage("Build Definitions Count: " + analysis.BuildDefCount);
+        model.id.AddMessage("Release Definitions Count: " + analysis.ReleaseDefCount);
+        if(analysis.ErrorMessages.Count>0)
         {
-            Console.WriteLine(item);
+            model.id.AddMessage("Errors: ");
+            foreach (var item in analysis.ErrorMessages)
+            {
+                model.id.AddMessage(item);
+            }
         }
     }
 }

@@ -17,16 +17,15 @@ namespace ADOGenerator.IServices
         int GetReleaseDefinitionCount(ProjectConfigurations appConfig);
         string[] GenerateTemplateArifacts(Project model);
         Dictionary<string, int> GetWorkItemsCount(ProjectConfigurations appConfig);
-        List<RequiredExtensions.ExtensionWithLink> GetInstalledExtensions(ProjectConfigurations appConfig);
-        void ExportQuries(ProjectConfigurations appConfig);
-        bool ExportTeams(RestAPI.ADOConfiguration con, Project model);
-        bool ExportIterations(ProjectConfigurations appConfig);
-        void ExportWorkItems(ProjectConfigurations appConfig);
-        void ExportRepositoryList(ProjectConfigurations appConfig);
-        int GetBuildDefinitions(ProjectConfigurations appConfig);
-        int GeneralizingGetReleaseDefinitions(ProjectConfigurations appConfig);
-        void GetServiceEndpoints(ProjectConfigurations appConfig);
-        void ExportDeliveryPlans(ProjectConfigurations appConfig);
-        
+        List<RequiredExtensions.ExtensionWithLink> GetInstalledExtensions(ProjectConfigurations appConfig, string extractedFolderName);
+        void ExportQuries(ProjectConfigurations appConfig, string extractedFolderName);
+        bool ExportTeams(RestAPI.ADOConfiguration con, Project model, string extractedFolderName);
+        bool ExportIterations(ProjectConfigurations appConfig, string extractedFolderName);
+        void ExportWorkItems(ProjectConfigurations appConfig, string extractedFolderName);
+        void ExportRepositoryList(ProjectConfigurations appConfig, string extractedFolderName);
+        int GetBuildDefinitions(ProjectConfigurations appConfig, string extractedFolderName);
+        int GeneralizingGetReleaseDefinitions(ProjectConfigurations appConfig, string extractedFolderName);
+        void GetServiceEndpoints(ProjectConfigurations appConfig, string extractedFolderName);
+        void ExportDeliveryPlans(ProjectConfigurations appConfig, string extractedFolderName);
     }
 }
