@@ -1,4 +1,4 @@
-﻿using ADOGenerator.IServices;
+using ADOGenerator.IServices;
 using ADOGenerator.Models;
 using Microsoft.Extensions.Configuration;
 using Microsoft.VisualStudio.Services.Common;
@@ -551,7 +551,6 @@ namespace ADOGenerator.Services
             #region work items
             Dictionary<string, string> workItems = new();
             string _WitPath = GetJsonFilePath(model.IsPrivatePath, model.PrivateTemplatePath, templateUsed, "WorkItems");
-            //Path.Combine(templatesFolder + templateUsed + "\\WorkItems");
             if (Directory.Exists(_WitPath))
             {
                 string[] workItemFilePaths = Directory.GetFiles(_WitPath);
@@ -559,18 +558,14 @@ namespace ADOGenerator.Services
                 {
                     foreach (var workItem in workItemFilePaths)
                     {
-                        string[] workItemPatSplit = workItem.Split('\\');
-                        if (workItemPatSplit.Length > 0)
+                        string workItemName = Path.GetFileName(workItem); // Use Path.GetFileName for cross-platform compatibility
+                        if (!string.IsNullOrEmpty(workItemName))
                         {
-                            string workItemName = workItemPatSplit[workItemPatSplit.Length - 1];
-                            if (!string.IsNullOrEmpty(workItemName))
+                            string[] nameExtension = workItemName.Split('.');
+                            string name = nameExtension[0];
+                            if (!workItems.ContainsKey(name))
                             {
-                                string[] nameExtension = workItemName.Split('.');
-                                string name = nameExtension[0];
-                                if (!workItems.ContainsKey(name))
-                                {
-                                    workItems.Add(name, model.ReadJsonFile(workItem));
-                                }
+                                workItems.Add(name, model.ReadJsonFile(workItem));
                             }
                         }
                     }
@@ -581,7 +576,6 @@ namespace ADOGenerator.Services
             if (File.Exists(projectSettingsFile))
             {
                 string attchmentFilesFolder = GetJsonFilePath(model.IsPrivatePath, model.PrivateTemplatePath, templateUsed, "WorkItemAttachments");
-                //string.Format(templatesFolder + @"{0}\WorkItemAttachments", templateUsed);
                 if (listPullRequestJsonPaths.Count > 0)
                 {
                     if (templateUsed == "MyHealthClinic")
@@ -603,7 +597,6 @@ namespace ADOGenerator.Services
                 }
                 model.id.AddMessage("Work Items created");
             }
-
             #endregion
 
             //Creat TestPlans and TestSuites
