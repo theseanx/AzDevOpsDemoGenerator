@@ -107,10 +107,47 @@ namespace ADOGenerator.Services
                     Console.ResetColor();
                     var projects = projectsJson["value"];
                     Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("+-----+--------------------------------+--------------------------------------+");
+                    Console.WriteLine("| No  | Project Name                   | Project ID                           |");
+                    Console.WriteLine("+-----+--------------------------------+--------------------------------------+");
                     for (int i = 0; i < projects.Count(); i++)
                     {
-                        Console.WriteLine($"{i + 1}. {projects[i]["name"]} (ID: {projects[i]["id"]})");
+                        string projectName = projects[i]["name"].ToString();
+                        string projectId = projects[i]["id"].ToString();
+
+                        // Wrap text if needed for Project Name
+                        if (projectName.Length > 30)
+                        {
+                            string wrappedName = projectName.Substring(0, 30);
+                            Console.WriteLine($"| {i + 1,-3} | {wrappedName.PadRight(30)} | {projectId.PadRight(36)} |");
+                            projectName = projectName.Substring(30);
+                            while (projectName.Length > 0)
+                            {
+                                wrappedName = projectName.Length > 30 ? projectName.Substring(0, 30) : projectName;
+                                Console.WriteLine($"|     | {wrappedName.PadRight(30)} | {"".PadRight(36)} |");
+                                projectName = projectName.Length > 30 ? projectName.Substring(30) : string.Empty;
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine($"| {i + 1,-3} | {projectName.PadRight(30)} | {projectId.PadRight(36)} |");
+                        }
+
+                        // Wrap text if needed for Project ID
+                        if (projectId.Length > 36)
+                        {
+                            string wrappedId = projectId.Substring(0, 36);
+                            Console.WriteLine($"|     | {"".PadRight(30)} | {wrappedId.PadRight(36)} |");
+                            projectId = projectId.Substring(36);
+                            while (projectId.Length > 0)
+                            {
+                                wrappedId = projectId.Length > 36 ? projectId.Substring(0, 36) : projectId;
+                                Console.WriteLine($"|     | {"".PadRight(30)} | {wrappedId.PadRight(36)} |");
+                                projectId = projectId.Length > 36 ? projectId.Substring(36) : string.Empty;
+                            }
+                        }
                     }
+                    Console.WriteLine("+-----+--------------------------------+--------------------------------------+");
                     Console.ResetColor();
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.WriteLine("Please select a project that uses the standard Scrum or Agile process template");

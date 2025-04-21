@@ -8,6 +8,7 @@ using Microsoft.VisualStudio.Services.DelegatedAuthorization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using RestAPI;
+using System.Text;
 using System.Text.RegularExpressions;
 
 var configuration = new ConfigurationBuilder()
@@ -49,7 +50,10 @@ do
             }
             else
             {
-                id.ErrorId().AddMessage(Environment.NewLine + "Artifacts generation failed.");
+                if(!template.Equals("skipped", StringComparison.OrdinalIgnoreCase))
+                {
+                    id.ErrorId().AddMessage(Environment.NewLine + "Artifacts generation failed.");
+                }
             }
             break;
 
@@ -61,25 +65,32 @@ do
     }
 
     Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine("Do you want to create another project? (yes/no): press enter to confirm");
+    Console.WriteLine(Environment.NewLine+"Do you want to create another project? (yes/no): press enter to confirm");
     Console.ResetColor();
     var createAnotherProject = Console.ReadLine();
     if (string.IsNullOrWhiteSpace(createAnotherProject) || createAnotherProject.Equals("yes", StringComparison.OrdinalIgnoreCase) || createAnotherProject.Equals("y", StringComparison.OrdinalIgnoreCase))
     {
-        Console.ForegroundColor = ConsoleColor.Green;
-        Console.WriteLine("Do you want to use the existing authentication details? (yes/no): press enter to confirm");
-        Console.ResetColor();
-        var useExistingAuth = Console.ReadLine();
-        if (string.IsNullOrWhiteSpace(useExistingAuth) || useExistingAuth.Equals("yes", StringComparison.OrdinalIgnoreCase) || useExistingAuth.Equals("y", StringComparison.OrdinalIgnoreCase))
+        if (authChoice == "2")
         {
-            if (authenticationDetails != null)
-            {
-                authenticationDetails = (authenticationDetails.Value.accessToken, null, authenticationDetails.Value.authScheme);
-            }
+            authenticationDetails = null;
         }
         else
         {
-            authenticationDetails = null;
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("Do you want to use the existing authentication details? (yes/no): press enter to confirm");
+            Console.ResetColor();
+            var useExistingAuth = Console.ReadLine();
+            if (string.IsNullOrWhiteSpace(useExistingAuth) || useExistingAuth.Equals("yes", StringComparison.OrdinalIgnoreCase) || useExistingAuth.Equals("y", StringComparison.OrdinalIgnoreCase))
+            {
+                if (authenticationDetails != null)
+                {
+                    authenticationDetails = (authenticationDetails.Value.accessToken, null, authenticationDetails.Value.authScheme);
+                }
+            }
+            else
+            {
+                authenticationDetails = null;
+            }
         }
         continue;
     }
@@ -103,17 +114,17 @@ void HandleTemplateAndArtifactsUpdate(string template, string id, Project model,
 
         if (UpdateTemplateSettings(template, id, templatePathOriginal))
         {
-            id.AddMessage("Template settings updated successfully at " + templatePathOriginal);
+            id.AddMessage(Environment.NewLine+"Template settings updated successfully at " + templatePathOriginal);
         }
         else
         {
-            id.ErrorId().AddMessage("Template settings update failed at " + templatePathOriginal);
+            id.ErrorId().AddMessage(Environment.NewLine+"Template settings update failed at " + templatePathOriginal);
         }
 
         CopyFileIfExists(id,templatePathOriginal, templatePathBin);
 
-        id.AddMessage("Template settings copied to the current directory and updated successfully.");
-        id.AddMessage("Moving artifacts to the current directory...");
+        id.AddMessage(Environment.NewLine+"Template settings copied to the current directory and updated successfully.");
+        id.AddMessage(Environment.NewLine + "Moving artifacts to the current directory...");
 
         var artifactsPathOriginal = Path.Combine(currentPath, "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
         var artifactsPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
@@ -135,10 +146,10 @@ void CopyFileIfExists(string id,string sourcePath, string destinationPath)
     else
     {
         Console.ForegroundColor = ConsoleColor.Green;
-        id.AddMessage($"Source file '{sourcePath}' does not exist. Creating a new file at the destination.");
+        id.AddMessage(Environment.NewLine+$"Source file '{sourcePath}' does not exist. Creating a new file at the destination.");
         string fileContents = File.ReadAllText(sourcePath);
         File.WriteAllText(destinationPath, fileContents);
-        id.AddMessage($"New file created at '{destinationPath}'.");
+        id.AddMessage(Environment.NewLine + $"New file created at '{destinationPath}'.");
         Console.ResetColor();
     }
 }
@@ -167,11 +178,11 @@ void MoveArtifacts(string sourcePath, string destinationPath, string id)
             File.Copy(file, destinationFile, true);
         }
 
-        id.AddMessage("Artifacts moved to the current directory.");
+        id.AddMessage(Environment.NewLine+"Artifacts moved to the current directory.");
     }
     else
     {
-        id.ErrorId().AddMessage("Artifacts directory not found at " + sourcePath);
+        id.ErrorId().AddMessage(Environment.NewLine+"Artifacts directory not found at " + sourcePath);
     }
 }
 
@@ -180,14 +191,10 @@ void SkipTemplateAndArtifactsUpdate(string id, string currentPath, Project model
     var templatePathBin = Path.Combine(Directory.GetCurrentDirectory(), "Templates", "TemplateSetting.json");
     var artifactsPathOriginal = Path.Combine(currentPath, "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
     var artifactsPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", $"CT-{model.ProjectName.Replace(" ", "-")}");
-    Console.ForegroundColor = ConsoleColor.Cyan;
-    id.AddMessage(Environment.NewLine+template);
-    Console.ResetColor();
-    Console.ForegroundColor = ConsoleColor.Green;
-    id.AddMessage("Copy the generated template JSON and update the template settings manually in the following file location: " + templatePathBin);
-    id.AddMessage("Template settings update and copying artifacts skipped.");
-    id.AddMessage("Copy the generated artifacts directory from " + artifactsPathOriginal + " and update the artifacts manually in the following directory location: " + artifactsPath);
-    Console.ResetColor();
+    id.WarningId().AddMessage(Environment.NewLine+template);
+    id.WarningId().AddMessage(Environment.NewLine+"Copy the generated template JSON and update the template settings manually in the following file location: " + templatePathBin);
+    id.WarningId().AddMessage(Environment.NewLine+"Template settings update and copying artifacts skipped.");
+    id.WarningId().AddMessage(Environment.NewLine+"Copy the generated artifacts directory from " + artifactsPathOriginal + " and update the artifacts manually in the following directory location: " + artifactsPath);
 }
 
 
@@ -265,35 +272,52 @@ void HandleNewProjectCreation(IConfiguration configuration, string id)
     };
 
     ITemplateService templateService = new TemplateService(configuration);
-    var analyzed = templateService.AnalyzeProject(model);
-    if (analyzed)
+    bool isTemplateExists = templateService.CheckTemplateExists(model);
+    if (isTemplateExists)
     {
-        model.id.AddMessage("Artifacts analyzed successfully.");
-    }
-    else
-    {
-        model.id.ErrorId().AddMessage("Artifacts analysis failed.");
-    }
-    Console.ForegroundColor = ConsoleColor.Green;
-    Console.WriteLine(Environment.NewLine+"Do you want to create artifacts yes/no:");
-    Console.ResetColor();
-    string response = Console.ReadLine();
-    if (response == "yes")
-    {
-        (bool isArtifactsGenerated, string template, string templateLocation) = templateService.GenerateTemplateArtifacts(model);
-        if(isArtifactsGenerated)
+        Console.ForegroundColor = ConsoleColor.Green;
+        Console.WriteLine(Environment.NewLine + "Do you still need to update the existing template?(yes/no)");
+        Console.ResetColor();
+        var updateTemplate = Console.ReadLine();
+        if (updateTemplate?.Equals("yes", StringComparison.OrdinalIgnoreCase) == true)
         {
-            model.id.AddMessage(Environment.NewLine+"Artifacts has been generated sccessfully at the location: " + templateLocation);
-            return (true, template,model);
+            var analyzed = templateService.AnalyzeProject(model);
+            if (analyzed)
+            {
+                model.id.AddMessage("Artifacts analyzed successfully.");
+            }
+            else
+            {
+                model.id.ErrorId().AddMessage("Artifacts analysis failed.");
+            }
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine(Environment.NewLine + "Do you want to create artifacts yes/no:");
+            Console.ResetColor();
+            string response = Console.ReadLine();
+            if (response == "yes")
+            {
+                (bool isArtifactsGenerated, string template, string templateLocation) = templateService.GenerateTemplateArtifacts(model);
+                if (isArtifactsGenerated)
+                {
+                    model.id.AddMessage(Environment.NewLine + "Artifacts has been generated sccessfully at the location: " + templateLocation);
+                    return (true, template, model);
+                }
+                else
+                {
+                    model.id.ErrorId().AddMessage(Environment.NewLine + "Artifacts generation failed.");
+                }
+            }
+            else
+            {
+                model.id.AddMessage(Environment.NewLine + "Artifacts generation skipped.");
+                return (false, "skipped", null);
+            }
         }
         else
         {
-            model.id.ErrorId().AddMessage(Environment.NewLine + "Artifacts generation failed.");
+            id.AddMessage(Environment.NewLine + "Template update skipped.");
+            return (false, "skipped", null);
         }
-    }
-    else
-    {
-        model.id.AddMessage(Environment.NewLine + "Artifacts generation skipped.");
     }
     return (false, string.Empty, null);
 }
@@ -328,17 +352,44 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
         if (templates != null)
         {
             Console.ForegroundColor = ConsoleColor.Yellow;
+            Console.WriteLine(new string('-', 100)); // Top border of the table
+            Console.WriteLine($"| {"Index",-10} | {"Template Name",-30} | {"Description",-50} |");
+            Console.WriteLine(new string('-', 100)); // Separator line  
             foreach (var template in templates)
             {
                 var templateName = template["Name"]?.ToString();
-                Console.WriteLine($"  {templateIndex}. {templateName}");
+                var templateDescription = template["Description"]?.ToString();
+
+                // Wrap content to fit console width  
+                var wrappedTemplateName = WrapText(templateName, 30);
+                var wrappedTemplateDescription = WrapText(templateDescription, 50);
+
+                var templateNameLines = wrappedTemplateName.Split(Environment.NewLine);
+                var templateDescriptionLines = wrappedTemplateDescription.Split(Environment.NewLine);
+                var maxLines = Math.Max(templateNameLines.Length, templateDescriptionLines.Length);
+
+                for (int i = 0; i < maxLines; i++)
+                {
+                    var nameLine = i < templateNameLines.Length ? templateNameLines[i] : string.Empty;
+                    var descriptionLine = i < templateDescriptionLines.Length ? templateDescriptionLines[i] : string.Empty;
+
+                    if (i == 0)
+                    {
+                        Console.WriteLine($"| {templateIndex,-10} | {nameLine,-30} | {descriptionLine,-50} |");
+                    }
+                    else
+                    {
+                        Console.WriteLine($"| {"",-10} | {nameLine,-30} | {descriptionLine,-50} |");
+                    }
+                }
+
+                Console.WriteLine(new string('-', 100)); // Divider after each row
                 templateDictionary.Add(templateIndex, templateName);
                 templateIndex++;
             }
             Console.ResetColor();
         }
     }
-
     id.AddMessage(Environment.NewLine+"Enter the template number from the list of templates above:");
     if (!int.TryParse(Console.ReadLine(), out var selectedTemplateNumber) || !templateDictionary.TryGetValue(selectedTemplateNumber, out var selectedTemplateName))
     {
@@ -348,6 +399,26 @@ string SelectTemplate(JToken groupwiseTemplates, string id)
 
     return selectedTemplateName.Trim();
 }
+string WrapText(string text, int maxWidth)
+{
+    if (string.IsNullOrEmpty(text)) return string.Empty;
+
+    var wrappedText = new StringBuilder();
+    int currentIndex = 0;
+
+    while (currentIndex < text.Length)
+    {
+        int remainingLength = text.Length - currentIndex;
+        int lineLength = Math.Min(maxWidth, remainingLength);
+
+        // Split at the exact maxWidth if no whitespace or special character is found
+        wrappedText.AppendLine(text.Substring(currentIndex, lineLength).Trim());
+        currentIndex += lineLength;
+    }
+
+    return wrappedText.ToString().TrimEnd();
+}
+
 (string accessToken, string organizationName, string authScheme) AuthenticateUser(Init init, string id)
 {
     string organizationName = string.Empty;

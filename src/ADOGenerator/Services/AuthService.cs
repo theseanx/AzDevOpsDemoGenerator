@@ -74,10 +74,34 @@ namespace ADOGenerator.Services
                     Console.ResetColor();
                     var accounts = accountsJson["value"];
                     Console.ForegroundColor = ConsoleColor.Yellow;
+                    Console.WriteLine("+-----+-------------------------------+--------------------------------------+");
+                    Console.WriteLine("| No  | Organization Name             | Organization ID                      |");
+                    Console.WriteLine("+-----+-------------------------------+--------------------------------------+");
                     for (int i = 0; i < accounts.Count(); i++)
                     {
-                        Console.WriteLine($"{i + 1}. {accounts[i]["accountName"]} (ID: {accounts[i]["accountId"]})");
+                        string serialNo = (i + 1).ToString();
+                        string accountName = accounts[i]["accountName"].ToString();
+                        string accountId = accounts[i]["accountId"].ToString();
+
+                        // Ensure proper wrapping and alignment
+                        accountName = accountName.Length > 25 ? accountName.Substring(0, 22) + "..." : accountName.PadRight(25);
+
+                        Console.WriteLine($"| {serialNo.PadRight(3)} | {accountName}     | {accountId} |");
+
+                        // Wrap to the next line if content exceeds the table width
+                        if (accounts[i]["accountName"].ToString().Length > 25 || accounts[i]["accountId"].ToString().Length > 15)
+                        {
+                            string wrappedAccountName = accounts[i]["accountName"].ToString().Length > 25
+                                ? accounts[i]["accountName"].ToString().Substring(25)
+                                : string.Empty;
+
+                            if (!string.IsNullOrEmpty(wrappedAccountName))
+                            {
+                                Console.WriteLine($"|     | {wrappedAccountName.PadRight(25)}     |                                     |");
+                            }
+                        }
                     }
+                    Console.WriteLine("+-----+-------------------------------+--------------------------------------+");
                     Console.ResetColor();
 
                     int selectedIndex;

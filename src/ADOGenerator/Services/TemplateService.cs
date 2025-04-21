@@ -58,6 +58,27 @@ public class TemplateService : ITemplateService
             return false;
         }
     }
+    public bool CheckTemplateExists(Project model)
+    {
+        try
+        {
+            if (extractorService.IsTemplateExists(model.ProjectName))
+            {
+                model.id.AddMessage("Template already exists.");
+                return true; // Template exists
+            }
+            else
+            {
+                model.id.AddMessage("Template does not exist.");
+                return false; // Template does not exist
+            }
+        }
+        catch (Exception ex)
+        {
+            model.id.ErrorId().AddMessage("Error checking template existence: " + ex.Message);
+            return false; // Error occurred while checking template existence
+        }
+    }
 
     public (bool,string,string) GenerateTemplateArtifacts(Project model)
     {
@@ -82,28 +103,38 @@ public class TemplateService : ITemplateService
 
     private void LogAnalysisResults(Project model, ExtractorAnalysis analysis)
     {
-        model.id.AddMessage("Analysis of the project");
-        model.id.AddMessage("Project Name: " + model.ProjectName);
-        model.id.AddMessage("Process Template Type: " + model.ProcessTemplate);
-        model.id.AddMessage("Teams Count: " + analysis.teamCount);
-        model.id.AddMessage("Iterations Count: " + analysis.IterationCount);
-        if(analysis.WorkItemCounts.Count > 0)
+        model.id.AddMessage(Environment.NewLine + "-------------------------------------------------------------------");
+        model.id.AddMessage("| Analysis of the project                                         |");
+        model.id.AddMessage("|-----------------------------------------------------------------|");
+        model.id.AddMessage($"| {"Property",-30} | {"Value",-30} |");
+        model.id.AddMessage("|-----------------------------------------------------------------|");
+        model.id.AddMessage($"| {"Project Name",-30} | {model.ProjectName.PadRight(30)} |");
+        model.id.AddMessage($"| {"Process Template Type",-30} | {model.ProcessTemplate.PadRight(30)} |");
+        model.id.AddMessage($"| {"Teams Count",-30} | {analysis.teamCount.ToString().PadRight(30)} |");
+        model.id.AddMessage($"| {"Iterations Count",-30} | {analysis.IterationCount.ToString().PadRight(30)} |");
+        model.id.AddMessage($"| {"Build Definitions Count",-30} | {analysis.BuildDefCount.ToString().PadRight(30)} |");
+        model.id.AddMessage($"| {"Release Definitions Count",-30} | {analysis.ReleaseDefCount.ToString().PadRight(30)} |");
+
+        if (analysis.WorkItemCounts.Count > 0)
         {
-            model.id.AddMessage("Work Items Count: ");
+            model.id.AddMessage("|-----------------------------------------------------------------|");
+            model.id.AddMessage("| Work Items Count:                                               |");
+            model.id.AddMessage("|-----------------------------------------------------------------|");
             foreach (var item in analysis.WorkItemCounts)
             {
-                model.id.AddMessage(item.Key + " : " + item.Value);
+                model.id.AddMessage($"| {item.Key.PadRight(30)} | {item.Value.ToString().PadRight(30)} |");
             }
         }
-        model.id.AddMessage("Build Definitions Count: " + analysis.BuildDefCount);
-        model.id.AddMessage("Release Definitions Count: " + analysis.ReleaseDefCount);
-        if(analysis.ErrorMessages.Count>0)
+        if (analysis.ErrorMessages.Count > 0)
         {
-            model.id.AddMessage("Errors: ");
+            model.id.AddMessage("|-----------------------------------------------------------------|");
+            model.id.AddMessage("| Errors:                                                         |");
+            model.id.AddMessage("|-----------------------------------------------------------------|");
             foreach (var item in analysis.ErrorMessages)
             {
-                model.id.AddMessage(item);
+                model.id.AddMessage($"| {item.PadRight(60)} |");
             }
         }
+        model.id.AddMessage("-------------------------------------------------------------------");
     }
 }

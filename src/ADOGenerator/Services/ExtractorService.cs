@@ -44,68 +44,6 @@ namespace ADOGenerator.Services
         {
             _config = config;
         }
-        
-        public static void AddMessage(string id, string message)
-        {
-            lock (objLock)
-            {
-                if (id.EndsWith("_Errors"))
-                {
-                    StatusMessages[id] = (StatusMessages.ContainsKey(id) ? StatusMessages[id] : string.Empty) + message;
-                }
-                else
-                {
-                    StatusMessages[id] = message;
-                }
-            }
-        }
-        public static Dictionary<string, string> StatusMessages
-        {
-            get
-            {
-                if (statusMessages == null)
-                {
-                    statusMessages = new Dictionary<string, string>();
-                }
-
-                return statusMessages;
-            }
-            set
-            {
-                statusMessages = value;
-            }
-        }
-        public static string GetStatusMessage(string id)
-        {
-            lock (objLock)
-            {
-                string message = string.Empty;
-                if (StatusMessages.Keys.Count(x => x == id) == 1)
-                {
-                    message = StatusMessages[id];
-                }
-                else
-                {
-                    return "100";
-                }
-
-                if (id.EndsWith("_Errors"))
-                {
-                    RemoveKey(id);
-                }
-
-                return message;
-            }
-        }
-
-        public static void RemoveKey(string id)
-        {
-            lock (objLock)
-            {
-                StatusMessages.Remove(id);
-            }
-        }
-
         #endregion  STATIC DECLARATIONS
 
         #region ANALYSIS - GET COUNTS
@@ -142,6 +80,50 @@ namespace ADOGenerator.Services
             projectConfig.VariableGroupConfig = new Configuration() { UriString = defaultHost + model.accountName + "/", PersonalAccessToken = model.accessToken, Project = model.ProjectName, AccountName = model.accountName, Id = model.id, VersionNumber = variableGroupsApiVersion, _adoAuthScheme = model.adoAuthScheme };
 
             return projectConfig;
+        }
+        public bool IsTemplateExists(string templateName)
+        {
+            string templatesDirectory = currentPath + @"Templates\";
+            string templateSettingsPath = templatesDirectory + "TemplateSetting.json";
+            if (!File.Exists(templateSettingsPath))
+            {
+                return false;
+            }
+            string templateSettingsContent = File.ReadAllText(templateSettingsPath);
+            JObject templateSettings = JObject.Parse(templateSettingsContent);
+            // Check if the template name exists in the settings by looping the GroupwiseTemplates
+            bool templateExists = false;
+            string templateFolder = string.Empty;
+            foreach (var group in templateSettings["GroupwiseTemplates"])
+            {
+                var templates = group["Template"];
+                foreach (var template in templates)
+                {
+                    if (template["Name"].ToString() == templateName)
+                    {
+                        templateExists = true;
+                        templateFolder = template["TemplateFolder"].ToString();
+                        break;
+                    }
+                }
+                if (templateExists)
+                {
+                    break;
+                }
+            }
+            if(!templateExists)
+            {
+                return false;
+            }
+            string templatePath = templatesDirectory + templateFolder;
+            if (Directory.Exists(templatePath))
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
         public int GetTeamsCount(ProjectConfigurations appConfig)
         {
@@ -204,18 +186,42 @@ namespace ADOGenerator.Services
             }
             return ReleaseDefCount;
         }
+        public Dictionary<string, int> GetWorkItemsCount(ProjectConfigurations appConfig)
+        {
+            string[] workItemtypes = GetAllWorkItemsName(appConfig);//{ "Epic", "Feature", "Product Backlog Item", "Task", "Test Case", "Bug", "User Story", "Test Suite", "Test Plan", "Issue" };
+            GetWorkItemsCount itemsCount = new GetWorkItemsCount(appConfig.WorkItemConfig);
+            Dictionary<string, int> fetchedWorkItemsCount = new Dictionary<string, int>();
+            if (workItemtypes.Length > 0)
+            {
+                foreach (var workItem in workItemtypes)
+                {
+                    itemsCount.LastFailureMessage = "";
+                    WorkItemFetchResponse.WorkItems WITCount = itemsCount.GetWorkItemsfromSource(workItem);
+                    if (WITCount.count > 0)
+                    {
+                        fetchedWorkItemsCount.Add(workItem, WITCount.count);
+                    }
+                    else if (!string.IsNullOrEmpty(itemsCount.LastFailureMessage))
+                    {
+                        errorMessages.Add(string.Format("Error while querying work item - {0}: {1}", workItem, itemsCount.LastFailureMessage));
+                    }
+                }
+            }
+
+            return fetchedWorkItemsCount;
+        }
         #endregion ANALYSIS - GET COUNTS
 
         #region GENERATE ARTIFACTS
         public string[] GenerateTemplateArifacts(Project model)
         {
+            model.id.AddMessage(Environment.NewLine+"Template Generation Started");
             extractedTemplatePath = currentPath + @"Templates\";
             string extractedFolderName = extractedTemplatePath + $"CT-{model.ProjectName.Replace(" ", "-")}";
             if (Directory.Exists(extractedFolderName))
             {
                 Directory.Delete(extractedFolderName, true);
             }
-            AddMessage(model.id, "");
             ProjectConfigurations appConfig = ProjectConfiguration(model);
 
             GetInstalledExtensions(appConfig, extractedFolderName);
@@ -225,7 +231,7 @@ namespace ADOGenerator.Services
 
             if (ExportIterations(appConfig, extractedFolderName))
             {
-                AddMessage(model.id, "Iterations Definition");
+                model.id.AddMessage("Iterations Definition Exported");
             }
             string filePathToRead = currentPath + @"\\PreSetting";
 
@@ -244,31 +250,30 @@ namespace ADOGenerator.Services
             teamArea = filePathToRead + "\\TeamArea.json";
             teamArea = File.ReadAllText(teamArea);
             File.WriteAllText(extractedFolderName + "\\TeamArea.json", teamArea);
-            AddMessage(model.id, "Team Areas");
+            model.id.AddMessage("Team Areas Exported");
 
-            ExportWorkItems(appConfig, extractedFolderName);
-            AddMessage(model.id, "Work Items");
+            if(ExportWorkItems(appConfig, extractedFolderName))
+                model.id.AddMessage("Work Items Exported");
 
-            ExportDeliveryPlans(appConfig, extractedFolderName);
-            AddMessage(model.id, "Delivery Plans");
+            if(ExportDeliveryPlans(appConfig, extractedFolderName))
+                model.id.AddMessage("Delivery Plans Exported");
 
-            ExportRepositoryList(appConfig, extractedFolderName);
-            AddMessage(model.id, "Repository and Service Endpoint");
+            if(ExportRepositoryList(appConfig, extractedFolderName))
+                model.id.AddMessage("Repository Exported");
 
             GetServiceEndpoints(appConfig, extractedFolderName);
             int count = GetBuildDefinitions(appConfig, extractedFolderName);
             if (count >= 1)
             {
-                AddMessage(model.id, "Build Definition");
+                model.id.AddMessage("Build Definition Exported");
             }
 
             int relCount = GeneralizingGetReleaseDefinitions(appConfig, extractedFolderName);
             if (relCount >= 1)
             {
-                AddMessage(model.id, "Release Definition");
+                model.id.AddMessage("Release Definition Exported");
             }
 
-            StatusMessages[model.id] = "100";
             // Generate custom template JSON
             var customTemplateJson = new
             {
@@ -295,32 +300,6 @@ namespace ADOGenerator.Services
             };
             return new string[] { model.id, JsonConvert.SerializeObject(customTemplateJson, Formatting.Indented) , extractedFolderName };
         }
-
-        public Dictionary<string, int> GetWorkItemsCount(ProjectConfigurations appConfig)
-        {
-            string[] workItemtypes = GetAllWorkItemsName(appConfig);//{ "Epic", "Feature", "Product Backlog Item", "Task", "Test Case", "Bug", "User Story", "Test Suite", "Test Plan", "Issue" };
-            GetWorkItemsCount itemsCount = new GetWorkItemsCount(appConfig.WorkItemConfig);
-            Dictionary<string, int> fetchedWorkItemsCount = new Dictionary<string, int>();
-            if (workItemtypes.Length > 0)
-            {
-                foreach (var workItem in workItemtypes)
-                {
-                    itemsCount.LastFailureMessage = "";
-                    WorkItemFetchResponse.WorkItems WITCount = itemsCount.GetWorkItemsfromSource(workItem);
-                    if (WITCount.count > 0)
-                    {
-                        fetchedWorkItemsCount.Add(workItem, WITCount.count);
-                    }
-                    else if (!string.IsNullOrEmpty(itemsCount.LastFailureMessage))
-                    {
-                        errorMessages.Add(string.Format("Error while querying work item - {0}: {1}", workItem, itemsCount.LastFailureMessage));
-                    }
-                }
-            }
-
-            return fetchedWorkItemsCount;
-        }
-
         public List<RequiredExtensions.ExtensionWithLink> GetInstalledExtensions(ProjectConfigurations appConfig,string extractedFolderName)
         {
             try
@@ -360,21 +339,21 @@ namespace ADOGenerator.Services
                         string fetchedJson = JsonConvert.SerializeObject(listExtension, Formatting.Indented);
 
                         File.WriteAllText(extractedFolderName + "\\Extensions.json", JsonConvert.SerializeObject(listExtension, Formatting.Indented));
+                        appConfig.ExtensionConfig.Id.AddMessage("Extensions Exported");
                     }
                 }
                 else if (!string.IsNullOrEmpty(listExtenison.LastFailureMessage))
                 {
-                    AddMessage(appConfig.ExtensionConfig.Id.ErrorId(), "Some error occured while fetching extensions");
+                    appConfig.ExtensionConfig.Id.ErrorId().AddMessage("Some error occured while fetching extensions"+Environment.NewLine+listExtenison.LastFailureMessage);
                 }
                 return extensionList;
             }
             catch (Exception ex)
             {
-                logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+                appConfig.ExtensionConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
             }
             return new List<RequiredExtensions.ExtensionWithLink>();
         }
-
         public void ExportQuries(ProjectConfigurations appConfig, string extractedFolderName)
         {
             try
@@ -439,19 +418,19 @@ namespace ADOGenerator.Services
                             }
                         }
                     }
+                    appConfig.QueriesConfig.Id.AddMessage("Queries Exported");
                 }
                 else if (!string.IsNullOrEmpty(queries.LastFailureMessage))
                 {
-                    AddMessage(appConfig.QueriesConfig.Id.ErrorId(), "Error while fetching queries");
+                    appConfig.QueriesConfig.Id.ErrorId().AddMessage("Error while fetching queries");
                 }
             }
             catch (Exception ex)
             {
-                logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+                appConfig.QueriesConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
             }
 
         }
-
         public bool ExportTeams(Configuration con, Project model,string extractedFolderName)
         {
             try
@@ -474,7 +453,7 @@ namespace ADOGenerator.Services
                 _team = nodes.ExportTeamList(defaultTeamID);
                 if (_team.value != null)
                 {
-                    AddMessage(con.Id, "Teams");
+                    con.Id.AddMessage("Teams");
 
                     string fetchedJson = JsonConvert.SerializeObject(_team.value, Formatting.Indented);
                     if (fetchedJson != "")
@@ -548,7 +527,7 @@ namespace ADOGenerator.Services
                                         basicColumns.BoardName = boardType;
                                         columnResponsesBasic.Add(basicColumns);
                                     }
-                                    AddMessage(con.Id, "Board Columns");
+                                    con.Id.AddMessage("Board Columns Exported for "+ boardType);
                                     Thread.Sleep(2000);
                                 }
                                 else
@@ -556,7 +535,7 @@ namespace ADOGenerator.Services
                                     var errorMessage = response.Content.ReadAsStringAsync();
                                     string error = RestAPI.Utility.GeterroMessage(errorMessage.Result.ToString());
                                     teamNodes.LastFailureMessage = error;
-                                    AddMessage(con.Id.ErrorId(), "Error occured while exporting Board Columns: " + teamNodes.LastFailureMessage);
+                                    con.Id.ErrorId().AddMessage("Error occured while exporting Board Columns: " + teamNodes.LastFailureMessage);
                                 }
 
                                 //Export board rows for each team
@@ -565,12 +544,12 @@ namespace ADOGenerator.Services
                                 {
                                     rows.BoardName = boardType;
                                     boardRows.Add(rows);
-                                    AddMessage(con.Id, "Board Rows");
+                                    con.Id.AddMessage("Board Rows Exported for "+boardType);
                                     Thread.Sleep(2000);
                                 }
                                 else if (!string.IsNullOrEmpty(teamNodes.LastFailureMessage))
                                 {
-                                    AddMessage(con.Id.ErrorId(), "Error occured while exporting Board Rows: " + teamNodes.LastFailureMessage);
+                                    con.Id.ErrorId().AddMessage("Error occured while exporting Board Rows: " + teamNodes.LastFailureMessage);
                                 }
 
 
@@ -582,7 +561,7 @@ namespace ADOGenerator.Services
                                     JObject jObj = JsonConvert.DeserializeObject<JObject>(res);
                                     jObj["BoardName"] = boardType;
                                     jObjCardFieldList.Add(jObj);
-                                    AddMessage(con.Id, "Card fields Definition");
+                                    con.Id.AddMessage("Card fields Definition Exported for "+ boardType);
 
                                 }
                                 else
@@ -590,10 +569,10 @@ namespace ADOGenerator.Services
                                     var errorMessage = cardFieldResponse.Content.ReadAsStringAsync();
                                     string error = RestAPI.Utility.GeterroMessage(errorMessage.Result.ToString());
                                     teamNodes.LastFailureMessage = error;
-                                    AddMessage(con.Id.ErrorId(), "Error occured while exporting Card Fields: " + teamNodes.LastFailureMessage);
+                                    con.Id.ErrorId().AddMessage("Error occured while exporting Card Fields: " + teamNodes.LastFailureMessage);
                                 }
 
-                                //// Export card styles for each team
+                                // Export card styles for each team
                                 var cardStyleResponse = teamNodes.ExportCardStyle(boardType);
                                 if (cardStyleResponse.IsSuccessStatusCode && cardStyleResponse.StatusCode == System.Net.HttpStatusCode.OK)
                                 {
@@ -610,7 +589,7 @@ namespace ADOGenerator.Services
                                         style["rules"]["tagStyle"] = new JArray();
                                     }
                                     jObjcardStyleList.Add(jObj);
-                                    AddMessage(con.Id, "Card style");
+                                    con.Id.AddMessage("Card style exported for "+ boardType);
 
                                 }
                                 else
@@ -618,7 +597,7 @@ namespace ADOGenerator.Services
                                     var errorMessage = cardStyleResponse.Content.ReadAsStringAsync();
                                     string error = RestAPI.Utility.GeterroMessage(errorMessage.Result.ToString());
                                     teamNodes.LastFailureMessage = error;
-                                    AddMessage(con.Id.ErrorId(), "Error occured while exporting Card Styles: " + teamNodes.LastFailureMessage);
+                                    con.Id.ErrorId().AddMessage("Error occured while exporting Card Styles: " + teamNodes.LastFailureMessage);
                                 }
                             }
                             //Export Team Setting for each team
@@ -628,12 +607,12 @@ namespace ADOGenerator.Services
                                 if (teamSetting.backlogVisibilities != null)
                                 {
                                     listTeamSetting = teamSetting;
-                                    AddMessage(con.Id, "Team Settings Definition");
+                                    con.Id.AddMessage("Team Settings Definition Exported");
                                 }
                             }
                             else if (!string.IsNullOrEmpty(teamNodes.LastFailureMessage))
                             {
-                                AddMessage(con.Id.ErrorId(), "Error occured while exporting Team Setting: " + teamNodes.LastFailureMessage);
+                                con.Id.ErrorId().AddMessage("Error occured while exporting Team Setting: " + teamNodes.LastFailureMessage);
                             }
 
                             if (columnResponsesAgile.Count > 0)
@@ -670,7 +649,7 @@ namespace ADOGenerator.Services
                     }
                     else if (!string.IsNullOrEmpty(nodes.LastFailureMessage))
                     {
-                        AddMessage(con.Id.ErrorId(), nodes.LastFailureMessage);
+                        con.Id.ErrorId().AddMessage(nodes.LastFailureMessage);
                         string error = nodes.LastFailureMessage;
                         return false;
                     }
@@ -681,17 +660,16 @@ namespace ADOGenerator.Services
                 }
                 else
                 {
-                    AddMessage(con.Id.ErrorId(), nodes.LastFailureMessage);
+                    con.Id.ErrorId().AddMessage(nodes.LastFailureMessage);
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+                con.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
             }
             return false;
         }
-
         public bool ExportIterations(ProjectConfigurations appConfig,string extractedFolderName)
         {
             try
@@ -711,86 +689,103 @@ namespace ADOGenerator.Services
                 else
                 {
                     string error = nodes.LastFailureMessage;
-                    AddMessage(appConfig.BoardConfig.Id.ErrorId(), error);
+                    appConfig.BoardConfig.Id.ErrorId().AddMessage(error);
                     return false;
                 }
             }
             catch (Exception ex)
             {
-                logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+                appConfig.BoardConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
             }
             return false;
         }
-
-        public void ExportWorkItems(ProjectConfigurations appConfig, string extractedFolderName)
+        public bool ExportWorkItems(ProjectConfigurations appConfig, string extractedFolderName)
         {
-            string[] workItemtypes = GetAllWorkItemsName(appConfig);//{ "Epic", "Feature", "Product Backlog Item", "Task", "Test Case", "Bug", "User Story", "Test Suite", "Test Plan", "Issue" };
-            if (!Directory.Exists(extractedFolderName))
+            bool isWorkItemExported = false;
+            try
             {
-                Directory.CreateDirectory(extractedFolderName);
-            }
-
-            if (workItemtypes.Length > 0)
-            {
-                foreach (var WIT in workItemtypes)
+                string[] workItemtypes = GetAllWorkItemsName(appConfig);//{ "Epic", "Feature", "Product Backlog Item", "Task", "Test Case", "Bug", "User Story", "Test Suite", "Test Plan", "Issue" };
+                if (!Directory.Exists(extractedFolderName))
                 {
-                    GetWorkItemsCount WorkitemsCount = new GetWorkItemsCount(appConfig.WorkItemConfig);
-                    WorkItemFetchResponse.WorkItems fetchedWorkItem = WorkitemsCount.GetWorkItemsfromSource(WIT);
-                    string workItemJson = JsonConvert.SerializeObject(fetchedWorkItem, Formatting.Indented);
-                    if (fetchedWorkItem.count > 0)
+                    Directory.CreateDirectory(extractedFolderName);
+                }
+
+                if (workItemtypes.Length > 0)
+                {
+                    foreach (var WIT in workItemtypes)
                     {
-                        workItemJson = workItemJson.Replace(appConfig.WorkItemConfig.Project + "\\", "$ProjectName$\\");
-                        string item = WIT;
-                        if (!Directory.Exists(extractedFolderName + "\\WorkItems"))
+                        GetWorkItemsCount WorkitemsCount = new GetWorkItemsCount(appConfig.WorkItemConfig);
+                        WorkItemFetchResponse.WorkItems fetchedWorkItem = WorkitemsCount.GetWorkItemsfromSource(WIT);
+                        string workItemJson = JsonConvert.SerializeObject(fetchedWorkItem, Formatting.Indented);
+                        if (fetchedWorkItem.count > 0)
                         {
-                            Directory.CreateDirectory(extractedFolderName + "\\WorkItems");
+                            workItemJson = workItemJson.Replace(appConfig.WorkItemConfig.Project + "\\", "$ProjectName$\\");
+                            string item = WIT;
+                            if (!Directory.Exists(extractedFolderName + "\\WorkItems"))
+                            {
+                                Directory.CreateDirectory(extractedFolderName + "\\WorkItems");
+                            }
+                            File.WriteAllText(extractedFolderName + "\\WorkItems\\" + item + ".json", workItemJson);
                         }
-                        File.WriteAllText(extractedFolderName + "\\WorkItems\\" + item + ".json", workItemJson);
+                        else if (!string.IsNullOrEmpty(WorkitemsCount.LastFailureMessage))
+                        {
+                            appConfig.WorkItemConfig.Id.ErrorId().AddMessage(WorkitemsCount.LastFailureMessage);
+                        }
                     }
-                    else if (!string.IsNullOrEmpty(WorkitemsCount.LastFailureMessage))
-                    {
-                        AddMessage(appConfig.WorkItemConfig.Id.ErrorId(), WorkitemsCount.LastFailureMessage);
-                    }
+                    isWorkItemExported = true;
                 }
             }
-        }
-
-        public void ExportRepositoryList(ProjectConfigurations appConfig, string extractedFolderName)
-        {
-            BuildandReleaseDefs repolist = new BuildandReleaseDefs(appConfig.RepoConfig);
-            RepositoryList.Repository repos = repolist.GetRepoList();
-            if (repos.count > 0)
+            catch (Exception ex)
             {
-                foreach (var repo in repos.value)
+                appConfig.WorkItemConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+            }
+            return isWorkItemExported;
+        }
+        public bool ExportRepositoryList(ProjectConfigurations appConfig, string extractedFolderName)
+        {
+            bool isRepoExported = false;
+            try
+            {
+                BuildandReleaseDefs repolist = new BuildandReleaseDefs(appConfig.RepoConfig);
+                RepositoryList.Repository repos = repolist.GetRepoList();
+                if (repos.count > 0)
                 {
-                    string preSettingPath = currentPath + @"\PreSetting";
-                    string host = appConfig.RepoConfig.UriString + appConfig.RepoConfig.Project;
-                    string sourceCodeJson = File.ReadAllText(preSettingPath + "\\ImportSourceCode.json");
-                    sourceCodeJson = sourceCodeJson.Replace("$Host$", host).Replace("$Repo$", repo.name);
-                    string endPointJson = File.ReadAllText(preSettingPath + "\\ServiceEndPoint.json");
-                    endPointJson = endPointJson.Replace("$Host$", host).Replace("$Repo$", repo.name);
-                    if (!Directory.Exists(extractedFolderName + "\\ImportSourceCode"))
+                    foreach (var repo in repos.value)
                     {
-                        Directory.CreateDirectory(extractedFolderName + "\\ImportSourceCode");
-                        File.WriteAllText(extractedFolderName + "\\ImportSourceCode\\" + repo.name + ".json", sourceCodeJson);
+                        string preSettingPath = currentPath + @"\PreSetting";
+                        string host = appConfig.RepoConfig.UriString + appConfig.RepoConfig.Project;
+                        string sourceCodeJson = File.ReadAllText(preSettingPath + "\\ImportSourceCode.json");
+                        sourceCodeJson = sourceCodeJson.Replace("$Host$", host).Replace("$Repo$", repo.name);
+                        string endPointJson = File.ReadAllText(preSettingPath + "\\ServiceEndPoint.json");
+                        endPointJson = endPointJson.Replace("$Host$", host).Replace("$Repo$", repo.name);
+                        if (!Directory.Exists(extractedFolderName + "\\ImportSourceCode"))
+                        {
+                            Directory.CreateDirectory(extractedFolderName + "\\ImportSourceCode");
+                            File.WriteAllText(extractedFolderName + "\\ImportSourceCode\\" + repo.name + ".json", sourceCodeJson);
+                        }
+                        else
+                        {
+                            File.WriteAllText(extractedFolderName + "\\ImportSourceCode\\" + repo.name + ".json", sourceCodeJson);
+                        }
+                        if (!Directory.Exists(extractedFolderName + "\\ServiceEndpoints"))
+                        {
+                            Directory.CreateDirectory(extractedFolderName + "\\ServiceEndpoints");
+                            File.WriteAllText(extractedFolderName + "\\ServiceEndpoints\\" + repo.name + "-code.json", endPointJson);
+                        }
+                        else
+                        {
+                            File.WriteAllText(extractedFolderName + "\\ServiceEndpoints\\" + repo.name + "-code.json", endPointJson);
+                        }
                     }
-                    else
-                    {
-                        File.WriteAllText(extractedFolderName + "\\ImportSourceCode\\" + repo.name + ".json", sourceCodeJson);
-                    }
-                    if (!Directory.Exists(extractedFolderName + "\\ServiceEndpoints"))
-                    {
-                        Directory.CreateDirectory(extractedFolderName + "\\ServiceEndpoints");
-                        File.WriteAllText(extractedFolderName + "\\ServiceEndpoints\\" + repo.name + "-code.json", endPointJson);
-                    }
-                    else
-                    {
-                        File.WriteAllText(extractedFolderName + "\\ServiceEndpoints\\" + repo.name + "-code.json", endPointJson);
-                    }
+                    isRepoExported = true;
                 }
             }
+            catch (Exception ex) 
+            {
+                appConfig.RepoConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+            }
+            return isRepoExported;
         }
-
         /// <summary>
         /// Get the Build definitions to write into file
         /// </summary>
@@ -1372,7 +1367,7 @@ namespace ADOGenerator.Services
             catch (Exception ex)
             {
                 logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
-                AddMessage(appConfig.ReleaseDefinitionConfig.Id.ErrorId(), ex.Message + Environment.NewLine + ex.StackTrace);
+                appConfig.ReleaseDefinitionConfig.Id.ErrorId().AddMessage(ex.Message + Environment.NewLine + ex.StackTrace);
             }
             return 0;
         }
@@ -1542,15 +1537,16 @@ namespace ADOGenerator.Services
                             File.WriteAllText(extractedFolderName + "\\ServiceEndpoints\\" + endpoint.name + ".json", JsonConvert.SerializeObject(endpoint, Formatting.Indented, new JsonSerializerSettings { NullValueHandling = NullValueHandling.Ignore }));
                         }
                     }
+                    appConfig.EndpointConfig.Id.AddMessage("Service endpoints exported");
                 }
                 else if (!string.IsNullOrEmpty(serviceEndPoint.LastFailureMessage))
                 {
-                    AddMessage(appConfig.EndpointConfig.Id.ErrorId(), "Error occured while fetchin service endpoints");
+                    appConfig.EndpointConfig.Id.ErrorId().AddMessage("Error occured while fetching service endpoints");
                 }
             }
             catch (Exception ex)
             {
-                logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
+                appConfig.EndpointConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
             }
         }
         /// <summary>
@@ -1572,7 +1568,6 @@ namespace ADOGenerator.Services
             }
             return workItemNames.ToArray();
         }
-
         private Dictionary<string, string> GetVariableGroups(ProjectConfigurations appConfig, string extractedFolderName)
         {
             VariableGroups variableGroups = new VariableGroups(appConfig.VariableGroupConfig);
@@ -1599,9 +1594,9 @@ namespace ADOGenerator.Services
             }
             return varibaleGroupDictionary;
         }
-
-        public void ExportDeliveryPlans(ProjectConfigurations appConfig, string extractedFolderName)
+        public bool ExportDeliveryPlans(ProjectConfigurations appConfig, string extractedFolderName)
         {
+            bool isDeliveryPlanExported = false;
             try
             {
                 Plans plans = new Plans(appConfig.WorkItemConfig);
@@ -1651,16 +1646,15 @@ namespace ADOGenerator.Services
                             }
                         }
                     }
+                    isDeliveryPlanExported = true;
                 }
             }
             catch (Exception ex)
             {
-
+                appConfig.WorkItemConfig.Id.ErrorId().AddMessage(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + ex.Message + "\n" + ex.StackTrace + "\n");
             }
-
+            return isDeliveryPlanExported;
         }
-        #endregion END GENERATE ARTIFACTS
-
-        
+        #endregion END GENERATE ARTIFACTS       
     }
 }

@@ -21,11 +21,12 @@ namespace ADOGenerator.IServices
         void ExportQuries(ProjectConfigurations appConfig, string extractedFolderName);
         bool ExportTeams(RestAPI.ADOConfiguration con, Project model, string extractedFolderName);
         bool ExportIterations(ProjectConfigurations appConfig, string extractedFolderName);
-        void ExportWorkItems(ProjectConfigurations appConfig, string extractedFolderName);
-        void ExportRepositoryList(ProjectConfigurations appConfig, string extractedFolderName);
+        bool ExportWorkItems(ProjectConfigurations appConfig, string extractedFolderName);
+        bool ExportRepositoryList(ProjectConfigurations appConfig, string extractedFolderName);
         int GetBuildDefinitions(ProjectConfigurations appConfig, string extractedFolderName);
         int GeneralizingGetReleaseDefinitions(ProjectConfigurations appConfig, string extractedFolderName);
         void GetServiceEndpoints(ProjectConfigurations appConfig, string extractedFolderName);
-        void ExportDeliveryPlans(ProjectConfigurations appConfig, string extractedFolderName);
+        bool ExportDeliveryPlans(ProjectConfigurations appConfig, string extractedFolderName);
+        bool IsTemplateExists(string templateName);
     }
 }
