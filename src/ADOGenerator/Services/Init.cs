@@ -52,6 +52,10 @@ namespace ADOGenerator.Services
        
         public string ExtractHref(string link)
         {
+            if(string.IsNullOrEmpty(link))
+            {
+                return string.Empty;
+            }
             var startIndex = link.IndexOf("href='") + 6;
             var endIndex = link.IndexOf("'", startIndex);
             return link.Substring(startIndex, endIndex - startIndex);

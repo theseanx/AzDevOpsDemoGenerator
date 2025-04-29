@@ -99,7 +99,7 @@ namespace RestAPI.Extractor
                         HttpResponseMessage response = client.GetAsync(_configuration.UriString + "/_apis/wit/workitems?api-version=" + _configuration.VersionNumber + "&ids=" + workitemstoFetch + "&$expand=relations").Result;
                         if (response.IsSuccessStatusCode && response.StatusCode == System.Net.HttpStatusCode.OK)
                         {
-                            viewModel = response.Content.ReadFromJsonAsync<WorkItemFetchResponse.WorkItems>().Result;
+                            viewModel = JsonConvert.DeserializeObject<WorkItemFetchResponse.WorkItems>(response.Content.ReadAsStringAsync().Result);
                         }
                         else
                         {
