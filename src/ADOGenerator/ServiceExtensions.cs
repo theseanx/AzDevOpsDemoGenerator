@@ -26,6 +26,11 @@ namespace ADOGenerator
             str = str + "_Errors";
             return str;
         }
+        public static string WarningId(this string str)
+        {
+            str = str + "_Warning";
+            return str;
+        }
 
         public static void AddMessage(this string id, string message)
         {
@@ -40,8 +45,7 @@ namespace ADOGenerator
                 string fileName = $"{DateTime.Now.ToString("yyyy-MM-dd")}-{id}.txt";
                 if (id.EndsWith("_Errors"))
                 {
-                    // Create Errors Log Directory if not exists
-                    if (!Directory.Exists(Path.Combine(logFilePath, "Errors")))
+                    if(!Directory.Exists(Path.Combine(logFilePath, "Errors")))
                     {
                         Directory.CreateDirectory(Path.Combine(logFilePath, "Errors"));
                     }
@@ -63,7 +67,7 @@ namespace ADOGenerator
                     }
                     File.AppendAllLines(Path.Combine(logFilePath, fileName), new string[] { message });
                     // Create Log file
-                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.ForegroundColor = id.EndsWith("_Warning") ? ConsoleColor.Yellow : ConsoleColor.Green;
                     Console.WriteLine(message);
                     Console.ResetColor();
                 }

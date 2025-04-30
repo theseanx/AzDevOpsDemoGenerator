@@ -9,6 +9,7 @@
 
 	<ItemGroup>
 		<Compile Remove="IServices\IConfiguration.cs" />
+		<Compile Remove="Models\Configuration.cs" />
 	</ItemGroup>
 	<ItemGroup>
 		<!-- Include the files you want to copy -->

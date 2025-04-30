@@ -17,6 +17,9 @@ namespace ADOGenerator.IServices
         public bool InstallExtensions(Project model, string accountName, string PAT);
 
         public bool WhereDoseTemplateBelongTo(string templatName);
+        public HttpResponseMessage GetProjects(string accname, string pat, string authScheme);
+
+        public Task<List<string>> SelectProject(string accessToken, HttpResponseMessage projectsData);
 
     }
 }
