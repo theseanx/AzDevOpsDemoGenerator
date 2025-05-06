@@ -11,30 +11,20 @@
         "columnType": "incoming"
       },
       {
-        "name": "Active",
+        "name": "In Progress",
         "itemLimit": 5,
         "stateMappings": {
-          "Epic": "Active"
+          "Epic": "In Progress"
         },
         "columnType": "inProgress",
         "isSplit": false,
         "description": ""
       },
       {
-        "name": "Resolved",
-        "itemLimit": 5,
-        "stateMappings": {
-          "Epic": "Resolved"
-        },
-        "columnType": "inProgress",
-        "isSplit": false,
-        "description": ""
-      },
-      {
-        "name": "Closed",
+        "name": "Done",
         "itemLimit": 0,
         "stateMappings": {
-          "Epic": "Closed"
+          "Epic": "Done"
         },
         "columnType": "outgoing"
       }
@@ -52,71 +42,65 @@
         "columnType": "incoming"
       },
       {
-        "name": "Active",
+        "name": "In Progress",
         "itemLimit": 5,
         "stateMappings": {
-          "Feature": "Active"
+          "Feature": "In Progress"
         },
         "columnType": "inProgress",
         "isSplit": false,
         "description": ""
       },
       {
-        "name": "Resolved",
-        "itemLimit": 5,
-        "stateMappings": {
-          "Feature": "Resolved"
-        },
-        "columnType": "inProgress",
-        "isSplit": false,
-        "description": ""
-      },
-      {
-        "name": "Closed",
+        "name": "Done",
         "itemLimit": 0,
         "stateMappings": {
-          "Feature": "Closed"
+          "Feature": "Done"
         },
         "columnType": "outgoing"
       }
     ]
   },
   {
-    "BoardName": "Stories",
+    "BoardName": "Backlog Items",
     "value": [
       {
         "name": "New",
         "itemLimit": 0,
         "stateMappings": {
-          "User Story": "New"
+          "Product Backlog Item": "New",
+          "Bug": "New"
         },
         "columnType": "incoming"
       },
       {
-        "name": "Active",
+        "name": "Approved",
         "itemLimit": 5,
         "stateMappings": {
-          "User Story": "Active"
+          "Product Backlog Item": "Approved",
+          "Bug": "Approved"
         },
         "columnType": "inProgress",
         "isSplit": false,
         "description": ""
       },
       {
-        "name": "Resolved",
+        "name": "Committed",
         "itemLimit": 5,
         "stateMappings": {
-          "User Story": "Resolved"
+          "Product Backlog Item": "Committed",
+          "Bug": "Committed"
         },
         "columnType": "inProgress",
         "isSplit": false,
         "description": ""
       },
       {
-        "name": "Closed",
+        "name": "Done",
         "itemLimit": 0,
         "stateMappings": {
-          "User Story": "Closed"
+          "Product Backlog Item": "Done",
+          "Bug": "Done"
         },
         "columnType": "outgoing"
       }

@@ -47,7 +47,7 @@
   },
   {
     "cards": {
-      "User Story": [
+      "Product Backlog Item": [
         {
           "fieldIdentifier": "System.Id"
         },
@@ -65,10 +65,31 @@
           "fieldIdentifier": "System.State"
         },
         {
-          "fieldIdentifier": "Microsoft.VSTS.Scheduling.StoryPoints"
+          "fieldIdentifier": "Microsoft.VSTS.Scheduling.Effort"
+        }
+      ],
+      "Bug": [
+        {
+          "fieldIdentifier": "System.Id"
+        },
+        {
+          "fieldIdentifier": "System.Title"
+        },
+        {
+          "fieldIdentifier": "System.AssignedTo",
+          "displayFormat": "AvatarAndFullName"
+        },
+        {
+          "fieldIdentifier": "System.Tags"
+        },
+        {
+          "fieldIdentifier": "System.State"
+        },
+        {
+          "fieldIdentifier": "Microsoft.VSTS.Scheduling.Effort"
         }
       ]
     },
-    "BoardName": "Stories"
+    "BoardName": "Backlog Items"
   }
 ]

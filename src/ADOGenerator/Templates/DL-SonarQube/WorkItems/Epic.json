@@ -32,27 +32,27 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/786",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/786",
           "attributes": {
             "isLocked": "False"
           }
         },
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/788",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/788",
           "attributes": {
             "isLocked": "False"
           }
         },
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/787",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/787",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/785"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/785"
     },
     {
       "id": 784,
@@ -85,20 +85,20 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/789",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/789",
           "attributes": {
             "isLocked": "False"
           }
         },
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/790",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/790",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/784"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/784"
     }
   ],
   "HttpStatusCode": 0

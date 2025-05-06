@@ -1,10 +1,10 @@
 {
   "parameters":
     {
-      "gitSource":
-        {
-          "url": "https://vstsdemodata.visualstudio.com/_git/Docker"
-        },
+      "gitSource": 
+      {
+        "url": "https://dev.azure.com/vstsdemodata/Docker/_git/Docker"
+      },
       "serviceEndpointId": "$Docker-code$",
       "deleteServiceEndpointAfterImportIsDone": true
     }

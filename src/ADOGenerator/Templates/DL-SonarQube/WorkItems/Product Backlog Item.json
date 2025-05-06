@@ -32,13 +32,13 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Reverse",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/788",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/788",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/791"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/791"
     },
     {
       "id": 800,
@@ -69,7 +69,7 @@
         "System.History": null
       },
       "relations": null,
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/800"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/800"
     },
     {
       "id": 793,
@@ -102,20 +102,20 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/795",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/795",
           "attributes": {
             "isLocked": "False"
           }
         },
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/796",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/796",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/793"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/793"
     },
     {
       "id": 792,
@@ -148,13 +148,13 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Reverse",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/788",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/788",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/792"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/792"
     },
     {
       "id": 797,
@@ -187,13 +187,13 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/798",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/798",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/797"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/797"
     },
     {
       "id": 794,
@@ -226,20 +226,20 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Reverse",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/786",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/786",
           "attributes": {
             "isLocked": "False"
           }
         },
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/799",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/799",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/794"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/794"
     }
   ],
   "HttpStatusCode": 0

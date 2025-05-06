@@ -16,7 +16,7 @@
           "Name": "eShopOnWeb",
           "TemplateFolder": "Gen-eShopOnWeb",
           "ShortName": "eShopOnWeb",
-          "Description": "This template contains the source code, pipelines and e2e implementations for GitHub Advanced Security for Azure DevOps using eShopOnWeb source code. See the home page for project on <a href='https://github.com/dotnet-architecture/eShopOnWeb' target='_blank'> GitHub</a>. <a href='https://azuredevopslabs.com/labs/azuredevops/EndtoEnd/' target='_blank'> Refer to Azure DevOps End to End Concepts </a>",
+          "Description": "This template contains the source code, pipelines and e2e implementations for GitHub Advanced Security for Azure DevOps using eShopOnWeb source code. See the home page for project on https://github.com/dotnet-architecture/eShopOnWeb. https://azuredevopslabs.com/labs/azuredevops/EndtoEnd/ Refer to Azure DevOps End to End Concepts",
           "Tags": [
             "GHAS",
             "Advanced Security",
@@ -31,14 +31,13 @@
           "Name": "Tailwind Traders",
           "TemplateFolder": "Gen-Tailwind Traders",
           "ShortName": "TailwindTraders",
-          "Description": "Tailwind Traders is an .NET Core & React application. The template has been configured to showcase the features of GHAzDo. Please refer to <a href='https://azure.microsoft.com/en-in/products/devops/github-advanced-security'> GitHub Advanced Security for Azure DevOps </a>",
+          "Description": "Tailwind Traders is an .NET Core & React application. The template has been configured to showcase the features of GHAzDo. Please refer to https://azure.microsoft.com/en-in/products/devops/github-advanced-security",
           "Tags": [
             "GHAzDo",
             "Code Scanning",
             "Dependency Scanning",
             "Secret Scanning",
             "Advanced Security"
-
           ],
           "PreviewImages": [
             "/Templates/Tailwind Traders/Images/Architecture.png",
@@ -53,7 +52,7 @@
           "Name": "PartsUnlimited",
           "TemplateFolder": "Gen-PartsUnlimited",
           "ShortName": "PartsUnlimited",
-          "Description": "Use this lab to provision a scrum based team project containing sample work items, complete source code and pipeline definitions to deploy Parts Unlimited, a sample eCommerce website based on the The Phoenix Project book by Gene Kim. See the home page of the project on <a href='https://github.com/Microsoft/PartsUnlimited' target='_blank'>GitHub</a> ",
+          "Description": "Use this lab to provision a scrum based team project containing sample work items, complete source code and pipeline definitions to deploy Parts Unlimited, a sample eCommerce website based on the The Phoenix Project book by Gene Kim. See the home page of the project on https://github.com/Microsoft/PartsUnlimited .",
           "Tags": [
             "scrum",
             "aspdotnet",
@@ -72,7 +71,7 @@
           "Name": "MyShuttle",
           "TemplateFolder": "Gen-MyShuttle",
           "ShortName": "MyShuttle",
-          "Description": "This template contains work items and source code for  MyShuttle, a sample Java application backed by a MySQL database. This template also contains pipeline definitions to build the maven project and deploy the app to Tomcat server on Azure app service. <br />Lab URL: <a href='https://www.azuredevopslabs.com/labs/vstsextend/tomcat/' target='_blank'> Deploying a Java application on Tomcat</a> ",
+          "Description": "This template contains work items and source code for  MyShuttle, a sample Java application backed by a MySQL database. This template also contains pipeline definitions to build the maven project and deploy the app to Tomcat server on Azure app service. Lab URL: https://www.azuredevopslabs.com/labs/vstsextend/tomcat/ .",
           "Tags": [
             "scrum",
             "java",
@@ -93,7 +92,7 @@
           "Name": "ContosoAir",
           "TemplateFolder": "Gen-ContosoAir",
           "ShortName": "ContosoAir",
-          "Description": "Contoso Air is a sample airline booking application with a Node.js based frontend with a CosmosDB database. This template provisions an Agile based project with user stories, features, epics and a CI&CD pipeline that builds and deploys code from  <a href='https://github.com/Microsoft/ContosoAir' target='_blank'>GitHub</a>",
+          "Description": "Contoso Air is a sample airline booking application with a Node.js based frontend with a CosmosDB database. This template provisions an Agile based project with user stories, features, epics and a CI&CD pipeline that builds and deploys code from https://github.com/Microsoft/ContosoAir .",
           "Tags": [
             "agile",
             "node.js",
@@ -102,7 +101,6 @@
           "Author": "Microsoft",
           "Image": "/Templates/TemplateImages/ContosAir.png"
         }
-
       ]
     },
     {
@@ -190,7 +188,7 @@
           "TemplateFolder": "DL-Keyvault",
           "ShortName": "Keyvault",
           "Image": "/Templates/TemplateImages/key-vault.png",
-          "Description": "Use this template to learn how you can read a secret from an Azure Key Vault in a CI/CD pipeline. <br/> Lab URL:<a href='https://azuredevopslabs.com/labs/vstsextend/azurekeyvault/' target='_blank'>Using secrets from Azure Key Vault in a pipeline</a>",
+          "Description": "Use this template to learn how you can read a secret from an Azure Key Vault in a CI/CD pipeline. Lab URL https://azuredevopslabs.com/labs/vstsextend/azurekeyvault/ Using secrets from Azure Key Vault in a pipeline .",
           "Tags": [
             "key vault",
             "azureappservice"
@@ -204,7 +202,7 @@
           "Name": "Docker",
           "TemplateFolder": "DL-Docker",
           "ShortName": "Docker",
-          "Description": "Learn how you can use Azure pipelines to build and deploy a Docker based ASP.NET Core web application to Azure Container Registry and  Azure App Service. <br/> Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/docker/' target='_blank'>Deploying Docker Containers to Azure App Service</a>",
+          "Description": "Learn how you can use Azure pipelines to build and deploy a Docker based ASP.NET Core web application to Azure Container Registry and  Azure App Service. Lab URL: https://azuredevopslabs.com/labs/vstsextend/docker/ Deploying Docker Containers to Azure App Service",
           "Tags": [
             "docker",
             "containers"
@@ -224,7 +222,7 @@
           "Name": "Azure Kubernetes Service",
           "TemplateFolder": "DL-AKS",
           "ShortName": "AKS",
-          "Description": "Use this template to learn how to deploy a Docker-based ASP.NET Core web application to a Kubernetes cluster running in Azure Kubernetes Service (AKS) with Azure Pipelines. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/kubernetes/' target='_blank'> Deploying to Azure Container Service (AKS)</a>",
+          "Description": "Use this template to learn how to deploy a Docker-based ASP.NET Core web application to a Kubernetes cluster running in Azure Kubernetes Service (AKS) with Azure Pipelines. Lab URL: https://azuredevopslabs.com/labs/vstsextend/kubernetes/ Deploying to Azure Container Service (AKS)</a>",
           "Tags": [
             "aks",
             "kubernetes",
@@ -245,7 +243,7 @@
           "Name": "Octopus",
           "TemplateFolder": "DL-Octopus",
           "ShortName": "Octopus",
-          "Description": "Select this template if you are following the “integrating Octopus Deploy” lab. The template provisions code for a sample PHP application and a build pipeline. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/Octopus/' target='_blank'>Integrating Octopus Deploy</a>",
+          "Description": "Select this template if you are following the “integrating Octopus Deploy” lab. The template provisions code for a sample PHP application and a build pipeline. Lab URL: https://azuredevopslabs.com/labs/vstsextend/Octopus/ .",
           "Tags": [
             "azure app service",
             "octopus"
@@ -265,7 +263,7 @@
           "Name": "Selenium",
           "TemplateFolder": "DL-Selenium",
           "ShortName": "Selenium",
-          "Description": "This template contains code of Parts Unlimited and pipelines definitions that will show you how you can deploy and test applications using Selenium. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/Selenium/' target='_blank'>Driving continuous testing with Selenium</a>",
+          "Description": "This template contains code of Parts Unlimited and pipelines definitions that will show you how you can deploy and test applications using Selenium. Lab URL: https://azuredevopslabs.com/labs/vstsextend/Selenium/",
           "Tags": [
             "selenium",
             "aspdotnet",
@@ -285,7 +283,7 @@
           "Name": "DeploymentGroups",
           "TemplateFolder": "DL-DeploymentGroups",
           "ShortName": "DeploymentGroups",
-          "Description": "Provision a team project using this template to learn how you build and release  applications to multiple target servers on Azure using Deployment Groups with Azure Pipelines. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/deploymentgroups/' target='_blank'>Working with Deployment Groups</a>",
+          "Description": "Provision a team project using this template to learn how you build and release  applications to multiple target servers on Azure using Deployment Groups with Azure Pipelines. Lab URL: https://azuredevopslabs.com/labs/vstsextend/deploymentgroups/",
           "Tags": [
             "deployment groups",
             "azure devops",
@@ -304,7 +302,7 @@
           "Name": "SonarQube",
           "TemplateFolder": "DL-SonarQube",
           "ShortName": "SonarQube",
-          "Description": "This template contains code of MyShuttle, a sample application and a pipeline definition that will show you how you can use SonarQube with Azure Pipeline to analyze code during build and improve code quality. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/sonarqube/' target='_blank'>Technical Debt Management with SonarQube</a>",
+          "Description": "This template contains code of MyShuttle, a sample application and a pipeline definition that will show you how you can use SonarQube with Azure Pipeline to analyze code during build and improve code quality. Lab URL: https://azuredevopslabs.com/labs/vstsextend/sonarqube/",
           "Tags": [
             "code analysis",
             "sonarqube"
@@ -324,7 +322,7 @@
           "Name": "ReleaseGates",
           "TemplateFolder": "DL-ReleaseGates",
           "ShortName": "ReleaseGates",
-          "Description": "Release Gates allow you to configure automated calls to external services, where the results are used to approve or reject a deployment. Use this template if you are following the <a href='https://azuredevopslabs.com/labs/vstsextend/releasegates/' target='_blank''>Controlling deployments using Release Gates</a> Lab",
+          "Description": "Release Gates allow you to configure automated calls to external services, where the results are used to approve or reject a deployment. Use this template if you are following the https://azuredevopslabs.com/labs/vstsextend/releasegates/ .",
           "Tags": [
             "aks",
             "kubernetes",
@@ -344,7 +342,7 @@
           "Name": "PHP",
           "TemplateFolder": "DL-PHP",
           "ShortName": "PHP",
-          "Description": "This template contains code for a sample PHP application and pipeline definitions to build & deploy a PHP application  to Azure App service. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/PHP/' target='_blank'> Deploy PHP application to Azure App Service</a>",
+          "Description": "This template contains code for a sample PHP application and pipeline definitions to build & deploy a PHP application  to Azure App service. Lab URL: https://azuredevopslabs.com/labs/vstsextend/PHP/",
           "Tags": [
             "php",
             "azure app service"
@@ -362,7 +360,7 @@
           "Name": "Python",
           "TemplateFolder": "DL-Python",
           "ShortName": "Python",
-          "Description": "Select this template with code for a sample Python application and pipeline definitions to learn how you can build and deploy a Python app to Azure App service using Django framework.<br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/python/' target='_blank'>How to deploy a Python application to Azure using Azure Pipelines</a>",
+          "Description": "Select this template with code for a sample Python application and pipeline definitions to learn how you can build and deploy a Python app to Azure App service using Django framework.Lab URL: https://azuredevopslabs.com/labs/vstsextend/python/ How to deploy a Python application to Azure using Azure Pipelines.",
           "Tags": [
             "quality validation",
             "infrastructure health"
@@ -381,7 +379,7 @@
           "Name": "WhiteSource Bolt",
           "TemplateFolder": "DL-WhiteSource-Bolt",
           "ShortName": "WhiteSource-Bolt",
-          "Description": "This template provisions WebGoat code, a deliberately insecure web application from OWASP along with CI and CD definitions that will teach you how you can manage security and compliance when using open-source software, with WhiteSource. <br />Lab URL: <a href='https://azuredevopslabs.com/labs/vstsextend/WhiteSource/' target='_blank'>OSS governance with WhiteSource</a>",
+          "Description": "This template provisions WebGoat code, a deliberately insecure web application from OWASP along with CI and CD definitions that will teach you how you can manage security and compliance when using open-source software, with WhiteSource. Lab URL: https://azuredevopslabs.com/labs/vstsextend/WhiteSource/ OSS governance with WhiteSource.",
           "Tags": [
             "security vulnerabilities"
           ],
@@ -428,7 +426,7 @@
             "Azure Pipelines"
           ],
           "Image": "/Templates/TemplateImages/mslearn/create-a-build-pipeline-azure-pipelines.png",
-          "Description": "Set up a continuous integration (CI) pipeline that automates the process of building your application. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/create-a-build-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Create a build pipeline</a>"
+          "Description": "Set up a continuous integration (CI) pipeline that automates the process of building your application. Lab URL: https://docs.microsoft.com/learn/modules/create-a-build-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady Create a build pipeline."
         },
         {
           "Key": "77738739",
@@ -444,7 +442,7 @@
           "Image": "/Templates/TemplateImages/mslearn/host-your-own-build-server-in-your-build-pipeline.png",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/implement-code-workflow/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Implement code workflow</a>",
-          "Description": "Collaborate with others and merge only the highest quality code. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/implement-code-workflow/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Implement code workflow</a>"
+          "Description": "Collaborate with others and merge only the highest quality code. Lab URL: https://docs.microsoft.com/learn/modules/implement-code-workflow/?WT.mc_id=devopsgen_inproduct-15843-dabrady Implement code workflow"
         },
         {
           "Key": "77738740",
@@ -458,7 +456,7 @@
           "Image": "/Templates/TemplateImages/mslearn/implement-a-code-workflow-in-your-build-pipeline.png",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/run-quality-tests-build-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Run quality tests build pipeline</a>",
-          "Description": "Set up automated testing in your pipeline to improve code quality. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/run-quality-tests-build-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Run quality tests build pipeline</a>"
+          "Description": "Set up automated testing in your pipeline to improve code quality. Lab URL: https://docs.microsoft.com/learn/modules/run-quality-tests-build-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady Run quality tests build pipeline."
         },
         {
           "Key": "77738741",
@@ -473,7 +471,7 @@
           "Image": "/Templates/TemplateImages/mslearn/manage-dependencies-in-your-build-pipeline.png",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/scan-for-vulnerabilities/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Scan for vulnerabilities</a>",
-          "Description": " Scan for potential vulnerabilities in your source code during the build process. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/scan-for-vulnerabilities/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Scan for vulnerabilities</a>"
+          "Description": " Scan for potential vulnerabilities in your source code during the build process. Lab URL: https://docs.microsoft.com/learn/modules/scan-for-vulnerabilities/?WT.mc_id=devopsgen_inproduct-15843-dabrady' Scan for vulnerabilities"
         },
         {
           "Key": "77738742",
@@ -488,7 +486,7 @@
           "Image": "/Templates/TemplateImages/mslearn/manage-security-and-compliance-in-your-build-pipeline.png",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/scan-open-source/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Scan open source</a>",
-          "Description": "Scan open-source components for security vulnerabilities and assess their license ratings when your application builds. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/scan-open-source/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Scan open source</a>"
+          "Description": "Scan open-source components for security vulnerabilities and assess their license ratings when your application builds. Lab URL: https://docs.microsoft.com/learn/modules/scan-open-source/?WT.mc_id=devopsgen_inproduct-15843-dabrady Scan open source."
         },
         {
           "Key": "77738743",
@@ -503,7 +501,7 @@
           "Image": "/Templates/TemplateImages/mslearn/run-quality-tests-when-your-application-builds.png",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/manage-build-dependencies/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage build dependencies</a>",
-          "Description": "Manage your application and the packages it uses across build pipelines. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/manage-build-dependencies/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage build dependencies</a>"
+          "Description": "Manage your application and the packages it uses across build pipelines. Lab URL: https://docs.microsoft.com/learn/modules/manage-build-dependencies/?WT.mc_id=devopsgen_inproduct-15843-dabrady Manage build dependencies."
         },
         {
           "Key": "77738744",
@@ -517,7 +515,7 @@
           "Image": "/Templates/TemplateImages/mslearn/scan-code-for-vulnerabilities-in-your-build-pipeline.png",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/host-build-agent/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Host build agent</a>",
-          "Description": "Use your own build agent when Microsoft-hosted agents don't meet your needs. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/host-build-agent/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Host build agent</a>"
+          "Description": "Use your own build agent when Microsoft-hosted agents don't meet your needs. Lab URL: https://docs.microsoft.com/learn/modules/host-build-agent/?WT.mc_id=devopsgen_inproduct-15843-dabrady Host build agent."
         },
         {
           "Key": "3456781",
@@ -531,7 +529,7 @@
           "Image": "/Templates/TemplateImages/mslearn/create-a-release-pipeline-with-azure-pipelines.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/create-release-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Create a release pipeline</a>",
-          "Description": "Set up a continuous delivery (CD) pipeline that automates the process of deploying your application. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/create-release-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Create a release pipeline</a>"
+          "Description": "Set up a continuous delivery (CD) pipeline that automates the process of deploying your application. Lab URL: https://docs.microsoft.com/learn/modules/create-release-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady Create a release pipeline."
         },
         {
           "Key": "3456782",
@@ -545,7 +543,7 @@
           "Image": "/Templates/TemplateImages/mslearn/create-multi-stage-pipeline.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/create-multi-stage-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Create a multi-stage pipeline</a>",
-          "Description": "Build a pipeline that deploys an app to multiple development and testing stages. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/create-multi-stage-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Create a multi-stage pipeline</a>"
+          "Description": "Build a pipeline that deploys an app to multiple development and testing stages. Lab URL: https://docs.microsoft.com/learn/modules/create-multi-stage-pipeline/?WT.mc_id=devopsgen_inproduct-15843-dabradyCreate a multi-stage pipeline."
         },
         {
           "Key": "3456783",
@@ -559,7 +557,7 @@
           "Image": "/Templates/TemplateImages/mslearn/manage-database-changes-with-azure-pipelines.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines. ' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/manage-database-changes-in-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage database changes</a>",
-          "Description": "Connect your webapp to an Azure SQL Database and manage database schema changes by using a release approval. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/manage-database-changes-in-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage database changes</a>"
+          "Description": "Connect your webapp to an Azure SQL Database and manage database schema changes by using a release approval. Lab URL: https://docs.microsoft.com/learn/modules/manage-database-changes-in-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Manage database changes."
         },
         {
           "Key": "3456784",
@@ -573,7 +571,7 @@
           "Image": "/Templates/TemplateImages/mslearn/run-functional-tests-azure-pipelines.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/run-functional-tests-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Run functional tests</a>",
-          "Description": "Run Selenium UI tests, a form of functional tests, in Azure Pipelines. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/run-functional-tests-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Run functional tests</a>"
+          "Description": "Run Selenium UI tests, a form of functional tests, in Azure Pipelines. Lab URL: https://docs.microsoft.com/learn/modules/run-functional-tests-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabradyRun functional tests."
         },
         {
           "Key": "3456785",
@@ -587,7 +585,7 @@
           "Image": "/Templates/TemplateImages/mslearn/run-non-functional-tests-in-azure-pipelines.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/run-non-functional-tests-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Run non-functional tests</a>",
-          "Description": "Run load tests with Apache JMeter, a form of non-functional tests, in Azure Pipelines. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/run-non-functional-tests-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Run non-functional tests</a>"
+          "Description": "Run load tests with Apache JMeter, a form of non-functional tests, in Azure Pipelines. Lab URL: https://docs.microsoft.com/learn/modules/run-non-functional-tests-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Run non-functional tests."
         },
         {
           "Key": "3456786",
@@ -601,7 +599,7 @@
           "Image": "/Templates/TemplateImages/mslearn/manage-release-cadence-using-deployment-patterns.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-deploy' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/manage-release-cadence/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage release cadence</a>",
-          "Description": "Choose an appropriate  deployment pattern for your application. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/manage-release-cadence/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage release cadence</a>"
+          "Description": "Choose an appropriate  deployment pattern for your application. Lab URL: https://docs.microsoft.com/learn/modules/manage-release-cadence/?WT.mc_id=devopsgen_inproduct-15843-dabrady Manage release cadence."
         },
         {
           "Key": "34567862",
@@ -616,7 +614,7 @@
           "Image": "/Templates/TemplateImages/mslearn/manage-release-cadence-using-deployment-patterns.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-automate' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/provision-infrastructure-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady ' target='_blank'>Provision infrastructure</a>",
-          "Description": "Run a Terraform plan in Azure Pipelines to automatically provision Azure resources. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/provision-infrastructure-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady ' target='_blank'>Provision infrastructure</a>"
+          "Description": "Run a Terraform plan in Azure Pipelines to automatically provision Azure resources. Lab URL: https://docs.microsoft.com/learn/modules/provision-infrastructure-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Provision infrastructure."
         },
         {
           "Key": "34567862",
@@ -630,7 +628,7 @@
           "Image": "/Templates/TemplateImages/mslearn/provision-database-azure-pipelines.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-automate' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/provision-database-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Provision Database</a>",
-          "Description": "Automatically provision Azure SQL Database in Azure Pipelines by using an Azure Resource Manager template. <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/provision-database-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Provision Database</a>"
+          "Description": "Automatically provision Azure SQL Database in Azure Pipelines by using an Azure Resource Manager template. Lab URL: https://docs.microsoft.com/learn/modules/provision-database-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Provision Database"
         },
         {
           "Key": "345678643",
@@ -644,7 +642,7 @@
           "Image": "/Templates/TemplateImages/mslearn/manage-agile-software-delivery-plans-across-teams.svg",
           "ForkGitHubRepo": false,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action",
-          "Description": "Learn to optimize delivery efficiency by improving work plan visibility across teams <br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/manage-delivery-plans/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage delivery plans</a>"
+          "Description": "Learn to optimize delivery efficiency by improving work plan visibility across teams Lab URL: https://docs.microsoft.com/learn/modules/manage-delivery-plans/?WT.mc_id=devopsgen_inproduct-15843-dabradyManage delivery plans"
         },
         {
           "Key": "345678644",
@@ -658,7 +656,7 @@
           "Image": "/Templates/TemplateImages/mslearn/deploy-azure-functions.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-azure-functions' target='_blank'> repository </a> manually and follow the steps given in the document - <a href='https://docs.microsoft.com/learn/modules/deploy-azure-functions/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Deploy Azure Functions</a>",
-          "Description": "Learn to implement a CI/CD pipeline for Azure Functions<br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/deploy-azure-functions/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Deploy Azure Functions</a>"
+          "Description": "Learn to implement a CI/CD pipeline for Azure Functions Lab URL: https://docs.microsoft.com/learn/modules/deploy-azure-functions/?WT.mc_id=devopsgen_inproduct-15843-dabrady Deploy Azure Functions."
         },
         {
           "Key": "345678645",
@@ -672,7 +670,7 @@
           "Image": "/Templates/TemplateImages/mslearn/deploy-docker.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-docker' target='_blank'> repository </a> manually and follow the steps given in the document - <a href=' https://docs.microsoft.com/learn/modules/deploy-docker/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Deploy Docker containers</a>",
-          "Description": "Learn to implement a CI/CD pipeline for Docker containers<br /><br />Lab URL: <a href=' https://docs.microsoft.com/learn/modules/deploy-docker/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Deploy Docker containers</a>"
+          "Description": "Learn to implement a CI/CD pipeline for Docker containers Lab URL: https://docs.microsoft.com/learn/modules/deploy-docker/?WT.mc_id=devopsgen_inproduct-15843-dabrady Deploy Docker containers."
         },
         {
           "Key": "345678646",
@@ -686,7 +684,7 @@
           "Image": "/Templates/TemplateImages/mslearn/deploy-kubernetes.svg",
           "ForkGitHubRepo": true,
           "Message": "Code for this project will be forked to your GitHub repository and the build definition will be using the forked repo, need user authentication. </ br> User has to be configured <a href='https://github.com/marketplace/azure-pipelines' target='_blank'>Azure Pipelines</a> extension to complete the action. <br> Forking may fail if the organization protected by SAML enforcement. You can fork the <a href='https://github.com/MicrosoftDocs/mslearn-tailspin-spacegame-web-kubernetes' target='_blank'> repository </a> manually and follow the steps given in the document - <a href=' https://docs.microsoft.com/learn/modules/deploy-kubernetes/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Deploymulti-container solutions to Kubernetes</a>",
-          "Description": "Learn to implement a CI/CD pipeline for multi-container solutions orchestrated with Kubernetes<br /><br />Lab URL: <a href=' https://docs.microsoft.com/learn/modules/deploy-kubernetes/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Deploymulti-container solutions to Kubernetes</a>"
+          "Description": "Learn to implement a CI/CD pipeline for multi-container solutions orchestrated with Kubernetes Lab URL: https://docs.microsoft.com/learn/modules/deploy-kubernetes/?WT.mc_id=devopsgen_inproduct-15843-dabrady Deploymulti-container solutions to Kubernetes."
         },
         {
           "Key": "5B06AA95-9578-438F-8E65-7C95765665A0",
@@ -699,13 +697,12 @@
             "ARM"
           ],
           "Image": "/Templates/TemplateImages/mslearn/testbicep.svg",
-          "Description": "Validate and test your Bicep code in your deployment pipeline. You'll use linting, preflight validation, and the what-if operation to validate your Azure changes before you deploy, and you'll test your resources after each deployment<br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/test-bicep-code-using-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Test Bicep code using Azure Pipelines</a>"
+          "Description": "Validate and test your Bicep code in your deployment pipeline. You'll use linting, preflight validation, and the what-if operation to validate your Azure changes before you deploy, and you'll test your resources after each deployment Lab URL: https://docs.microsoft.com/learn/modules/test-bicep-code-using-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Test Bicep code using Azure Pipelines."
         },
         {
-
           "Key": "971E21BF-76C1-4C88-929C-63F824830459",
           "Name": "Manage multiple environments by using Bicep and Azure Pipelines",
-          "TemplateFolder": "Manage-multiple-environments-azure-pipelines",
+          "TemplateFolder": "MSL-Manage-multiple-environments-azure-pipelines",
           "ShortName": "bicepenvironments",
           "Tags": [
             "Microsoft Learn",
@@ -713,7 +710,7 @@
             "ARM"
           ],
           "Image": "/Templates/TemplateImages/mslearn/bicepenvironments.svg",
-          "Description": "Deploy your Bicep code to multiple environments to improve the quality of your deployments. Use pipeline templates to reduce code duplication, and set different parameter values for each environment<br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/manage-multiple-environments-using-bicep-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage multiple environments by using Bicep Azure Pipelines</a>"
+          "Description": "Deploy your Bicep code to multiple environments to improve the quality of your deployments. Use pipeline templates to reduce code duplication, and set different parameter values for each environment Lab URL: https://docs.microsoft.com/learn/modules/manage-multiple-environments-using-bicep-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Manage multiple environments by using Bicep Azure Pipelines."
         },
         {
           "Key": "CBB8A827-69C8-4073-89C2-A634053FFBC9",
@@ -726,7 +723,7 @@
             "ARM"
           ],
           "Image": "/Templates/TemplateImages/mslearn/bicep-end-to-end-deployment-pipeline.svg",
-          "Description": "Create a unified pipeline to deploy your entire environment. You'll add a build stage to your pipeline, and use pipeline artifacts and Bicep outputs to publish applications, databases, and blobs<br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/manage-end-end-deployment-scenarios-using-bicep-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Manage end-to-end deployment scenarios by using Bicep and Azure Pipelines</a>"
+          "Description": "Create a unified pipeline to deploy your entire environment. You'll add a build stage to your pipeline, and use pipeline artifacts and Bicep outputs to publish applications, databases, and blobs Lab URL: https://docs.microsoft.com/learn/modules/manage-end-end-deployment-scenarios-using-bicep-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Manage end-to-end deployment scenarios by using Bicep and Azure Pipelines."
         },
         {
           "Key": "E48A30EB-857C-43AD-9D7F-CFD58CC8D051",
@@ -739,7 +736,7 @@
             "ARM"
           ],
           "Image": "/Templates/TemplateImages/mslearn/review-azure-infrastructure.png",
-          "Description": "Ensure the quality of your team's Bicep code. Use branching strategies to protect your main branch from accidental changes. Review Bicep code by using pull requests<br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/review-azure-infrastructure-changes-using-bicep-pull-requests/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Review Azure infrastructure changes by using Bicep and pull requests</a>"
+          "Description": "Ensure the quality of your team's Bicep code. Use branching strategies to protect your main branch from accidental changes. Review Bicep code by using pull requests Lab URL: https://docs.microsoft.com/learn/modules/review-azure-infrastructure-changes-using-bicep-pull-requests/?WT.mc_id=devopsgen_inproduct-15843-dabrady Review Azure infrastructure changes by using Bicep and pull requests."
         },
         {
           "Key": "06AE7538-42F1-4910-B3A0-183B2F2337C4",
@@ -752,7 +749,7 @@
             "ARM"
           ],
           "Image": "/Templates/TemplateImages/mslearn/bicep-publish-code-pipelines.png",
-          "Description": "Publish Azure template specs and Bicep modules by using a deployment pipeline. Automatically validate and add versioning to your reusable Bicep code.<br /><br />Lab URL: <a href='https://docs.microsoft.com/learn/modules/publish-reusable-bicep-code-using-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady' target='_blank'>Publish reusable Bicep code by using Azure Pipelines</a>"
+          "Description": "Publish Azure template specs and Bicep modules by using a deployment pipeline. Automatically validate and add versioning to your reusable Bicep code. Lab URL: https://docs.microsoft.com/learn/modules/publish-reusable-bicep-code-using-azure-pipelines/?WT.mc_id=devopsgen_inproduct-15843-dabrady Publish reusable Bicep code by using Azure Pipelines."
         }
       ]
     },
@@ -806,7 +803,7 @@
           "Name": "SAP on Azure",
           "TemplateFolder": "AC-SapOnAzure",
           "ShortName": "sapazure",
-          "Description": "Main topics for successful SAP on Azure deployment, organized in task lists linking both Azure and SAP documentation. <a href='https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/get-started' target='_blank'>Reference Document</a>",
+          "Description": "Main topics for successful SAP on Azure deployment, organized in task lists linking both Azure and SAP documentation. https://docs.microsoft.com/en-us/azure/virtual-machines/workloads/sap/get-started Reference Document.",
           "Tags": [
             "Agile",
             "Cloud Adoption",
@@ -1012,7 +1009,7 @@
           "Name": "Retail Recommender with Azure Synapse",
           "TemplateFolder": "CAF-RetailRecommender-SolutionAccelerator",
           "ShortName": "retailai",
-          "Description": "This Solution Accelerator is an end-to-end example on how to enable personalized customer experiences for retail scenarios by leveraging Azure Synapse Analytics, Azure Machine Learning Services, and other Azure Big Data services. This project can be found in the following GitHub repo <a href='https://github.com/microsoft/Azure-Synapse-Retail-Recommender-Solution-Accelerator' target='_blank'>Retail Recommender with Azure Synapse</a>",
+          "Description": "This Solution Accelerator is an end-to-end example on how to enable personalized customer experiences for retail scenarios by leveraging Azure Synapse Analytics, Azure Machine Learning Services, and other Azure Big Data services. This project can be found in the following GitHub repo https://github.com/microsoft/Azure-Synapse-Retail-Recommender-Solution-Accelerator Retail Recommender with Azure Synapse.",
           "Tags": [
             "Agile",
             "Cloud Adoption",
@@ -1030,14 +1027,13 @@
           "Name": "Modern IOT",
           "TemplateFolder": "CAF-ModernIOT",
           "ShortName": "modiot",
-          "Description": " Connected sensors, devices, and intelligent operations can transform businesses and enable new growth opportunities. In this project you will get the work items needed to plan and implement your IOT solution using the <a href='https://azure.microsoft.com/en-us/overview/iot/?WT.mc_id=devops_userstory_service_iot-inproduct-devopsportal' targer='_blank'> Azure IoT Platform </a>",
+          "Description": " Connected sensors, devices, and intelligent operations can transform businesses and enable new growth opportunities. In this project you will get the work items needed to plan and implement your IOT solution using the https://azure.microsoft.com/en-us/overview/iot/?WT.mc_id=devops_userstory_service_iot-inproduct-devopsportal Azure IoT Platform.",
           "Tags": [
             "Agile",
             "Cloud Adoption",
             "Innovate",
             "IOT",
             "Microsoft Cloud Adoption Framework"
-
           ],
           "Image": "/Templates/TemplateImages/AzureCommunity/modiot.png"
         },
@@ -1046,7 +1042,7 @@
           "Name": "Secure Research",
           "TemplateFolder": "CAF-SecureResearch",
           "ShortName": "secresearch",
-          "Description": " Microsoft has developed a secure research enclave architecture designed for existing and emerging standards. The solution enables a centralized and scalable approach that allows institutions to accelerate research efforts without placing added administrative overhead on researchers. <a href='https://info.microsoft.com/en-us-ondemand-SimplifyandautomateresearchcomplianceresponsibilitieswithAzure-none.html' target='_blank'> On-demand Webinar</a>",
+          "Description": " Microsoft has developed a secure research enclave architecture designed for existing and emerging standards. The solution enables a centralized and scalable approach that allows institutions to accelerate research efforts without placing added administrative overhead on researchers. https://info.microsoft.com/en-us-ondemand-SimplifyandautomateresearchcomplianceresponsibilitieswithAzure-none.html On-demand Webinar.",
           "Tags": [
             "Agile",
             "Cloud Adoption",
@@ -1062,7 +1058,7 @@
           "Name": "Unified Data Governance",
           "TemplateFolder": "CAF-UnifiedDataGovernance",
           "ShortName": "datagov",
-          "Description": " Azure Purview is a unified data governance service that helps you manage and govern your on-premises, multi-cloud, and software-as-a-service (SaaS) data. Easily create a holistic, up-to-date map of your data landscape with automated data discovery, sensitive data classification, and end-to-end data lineage. Empower data consumers to find valuable, trustworthy data. <a href=''https://azure.microsoft.com/en-us/services/purview/' target='_blank'> Here </a>",
+          "Description": " Azure Purview is a unified data governance service that helps you manage and govern your on-premises, multi-cloud, and software-as-a-service (SaaS) data. Easily create a holistic, up-to-date map of your data landscape with automated data discovery, sensitive data classification, and end-to-end data lineage. Empower data consumers to find valuable, trustworthy data. https://azure.microsoft.com/en-us/services/purview/ .",
           "Tags": [
             "Agile",
             "Cloud Adoption",
@@ -1078,7 +1074,7 @@
           "Name": "Modern Data Analytics",
           "TemplateFolder": "CAF-ModernDataAnalytics",
           "ShortName": "dataanalytics",
-          "Description": " Enterprise-scale for analytics and AI builds upon enterprise landing zones for ease of deployment and governance. The principal purpose of the enterprise landing zones is to ensure that when an application or workload lands on Azure, the required plumbing is already in place. It provides greater agility and compliance with enterprise security and governance requirements. Enterprise-scale landing zones must be in place before you deploy your first data management and analytics landing zones. <a href='https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/data-management/enterprise-scale-landing-zone' target='_blank'> Modern Data Analytics </a>",
+          "Description": " Enterprise-scale for analytics and AI builds upon enterprise landing zones for ease of deployment and governance. The principal purpose of the enterprise landing zones is to ensure that when an application or workload lands on Azure, the required plumbing is already in place. It provides greater agility and compliance with enterprise security and governance requirements. Enterprise-scale landing zones must be in place before you deploy your first data management and analytics landing zones. https://docs.microsoft.com/en-us/azure/cloud-adoption-framework/scenarios/data-management/enterprise-scale-landing-zone Modern Data Analytics.",
           "Tags": [
             "Agile",
             "Cloud Adoption",
@@ -1099,7 +1095,7 @@
           "Name": "Azure Migrations - IaC",
           "TemplateFolder": "FA-IAC-migration",
           "ShortName": "AzureMigrationsIaC",
-          "Description": "Starter template guidance around executing Azure Migrations through a redeployment approach with Infrastructure as Code (Bicep and Powershell). <a href='https://github.com/amillerb/fta-live-devops-iac-migration-src/blob/main/readme.md' target='_blank'>IaC Migration</a>",
+          "Description": "Starter template guidance around executing Azure Migrations through a redeployment approach with Infrastructure as Code (Bicep and Powershell). https://github.com/amillerb/fta-live-devops-iac-migration-src/blob/main/readme.md IaC Migration.",
           "Tags": [
             "Migration",
             "Azure"

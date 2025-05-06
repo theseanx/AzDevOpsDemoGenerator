@@ -1,7 +1,7 @@
 {
   "parameters": {
     "gitSource": {
-      "url": "https://vstsdemodata.visualstudio.com/_git/PHP"
+      "url": "https://dev.azure.com/vstsdemodata/PHP/_git/PHP"
     },
     "serviceEndpointId": "$php-code$",
     "deleteServiceEndpointAfterImportIsDone": true

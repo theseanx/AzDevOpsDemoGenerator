@@ -32,13 +32,13 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/807",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/807",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/806"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/806"
     },
     {
       "id": 805,
@@ -71,13 +71,13 @@
       "relations": [
         {
           "rel": "System.LinkTypes.Hierarchy-Forward",
-          "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/801",
+          "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/801",
           "attributes": {
             "isLocked": "False"
           }
         }
       ],
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/805"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/805"
     }
   ],
   "HttpStatusCode": 0

@@ -627,7 +627,7 @@ namespace ADOGenerator.Services
                 string repositoryToDelete = objRepository.GetRepositoryToDelete(model.ProjectName);
                 bool isDeleted = objRepository.DeleteRepository(repositoryToDelete);
             }
-
+            isDefaultRepoTodetele = true;
             #endregion
 
             //Create Pull request
@@ -1328,13 +1328,13 @@ namespace ADOGenerator.Services
                 }
                 else if (!(string.IsNullOrEmpty(objBoard.LastFailureMessage)))
                 {
-                    id.ErrorId().AddMessage("Error while updating board column " + objBoard.LastFailureMessage + Environment.NewLine);
+                    id.ErrorId().AddMessage("Error while updating board column for board type : " + BoardType + objBoard.LastFailureMessage + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
                 // logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + "\t" + ex.Message + "\t" + "\n" + ex.StackTrace + "\n");
-                id.ErrorId().AddMessage("Error while updating board column " + ex.Message);
+                id.ErrorId().AddMessage("Error while updating board column for board type : " + BoardType + ex.Message);
             }
             return result;
         }
@@ -1356,13 +1356,13 @@ namespace ADOGenerator.Services
 
                 if (!string.IsNullOrEmpty(objCards.LastFailureMessage))
                 {
-                    id.ErrorId().AddMessage("Error while updating card fields: " + objCards.LastFailureMessage + Environment.NewLine);
+                    id.ErrorId().AddMessage("Error while updating card fields for board type : " + boardType + objCards.LastFailureMessage + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
                 // logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + "\t" + ex.Message + "\t" + "\n" + ex.StackTrace + "\n");
-                id.ErrorId().AddMessage("Error while updating card fields: " + ex.Message);
+                id.ErrorId().AddMessage("Error while updating card fields for board type : "+ boardType + ex.Message);
 
             }
 
@@ -1384,13 +1384,13 @@ namespace ADOGenerator.Services
 
                 if (!string.IsNullOrEmpty(objCards.LastFailureMessage))
                 {
-                    id.ErrorId().AddMessage("Error while updating card styles: " + objCards.LastFailureMessage + Environment.NewLine);
+                    id.ErrorId().AddMessage("Error while updating card styles for board type : " + boardType + objCards.LastFailureMessage + Environment.NewLine);
                 }
             }
             catch (Exception ex)
             {
                 // logger.Info(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + "\t" + ex.Message + "\t" + "\n" + ex.StackTrace + "\n");
-                id.ErrorId().AddMessage("Error while updating card styles: " + ex.Message);
+                id.ErrorId().AddMessage("Error while updating card styles for board type : " + boardType + ex.Message);
             }
 
         }
@@ -1651,6 +1651,14 @@ namespace ADOGenerator.Services
                     if (model.ProjectName.ToLower() == repositoryName.ToLower())
                     {
                         repositoryDetail = objRepository.GetDefaultRepository(model.ProjectName);
+                        if (repositoryDetail.All(string.IsNullOrEmpty))
+                        {
+                            repositoryDetail = objRepository.CreateRepository(model.ProjectName, model.Environment.ProjectId);
+                        }
+                        else
+                        {
+                            isDefaultRepoTodetele = false;
+                        }
                     }
                     else
                     {
@@ -1681,9 +1689,9 @@ namespace ADOGenerator.Services
                         model.Environment.reposImported.Add(repositoryDetail[0], copySourceCode);
                     }
 
-                    if (!(string.IsNullOrEmpty(objRepository.LastFailureMessage)))
+                    if (!(string.IsNullOrEmpty(objRepositorySourceCode.LastFailureMessage)))
                     {
-                        id.ErrorId().AddMessage("Error while importing source code: " + objRepository.LastFailureMessage + Environment.NewLine);
+                        id.ErrorId().AddMessage("Error while importing source code: " + objRepositorySourceCode.LastFailureMessage + Environment.NewLine);
                     }
                 }
 

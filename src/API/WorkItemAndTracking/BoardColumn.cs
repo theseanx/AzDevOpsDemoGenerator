@@ -106,9 +106,13 @@ namespace RestAPI.WorkItemAndTracking
                     var response = client.GetAsync(_configuration.UriString + "/" + projectName + "/" + teamName + "/_apis/work/boards/" + boardType + "?api-version=" + _configuration.VersionNumber).Result;
                     if (response.IsSuccessStatusCode)
                     {
-                        columns = response.Content.ReadFromJsonAsync<GetBoardColumnResponse.ColumnResponse>().Result;
-                        this.rowFieldName = columns.fields.rowField.referenceName;
-                        return columns;
+                        string responseString = response.Content.ReadAsStringAsync().Result;
+                        if (!string.IsNullOrEmpty(responseString))
+                        {
+                            columns = JsonConvert.DeserializeObject<GetBoardColumnResponse.ColumnResponse>(responseString);
+                            this.rowFieldName = columns.fields.rowField.referenceName;
+                            return columns;
+                        }
                     }
                     else
                     {
@@ -138,7 +142,7 @@ namespace RestAPI.WorkItemAndTracking
                     {
                         columns = response.Content.ReadFromJsonAsync<GetBoardColumnResponseAgile.ColumnResponse>().Result;
                         this.rowFieldName = columns.fields.rowField.referenceName;
-                        return columns;
+                        return columns;                        
                     }
                     else
                     {

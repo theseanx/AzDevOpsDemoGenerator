@@ -4,7 +4,7 @@
   },
   "name": "php-code",
   "type": "git",
-  "url": "https://vstsdemodata.visualstudio.com/_git/PHP",
+  "url": "https://dev.azure.com/vstsdemodata/PHP/_git/PHP",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {
