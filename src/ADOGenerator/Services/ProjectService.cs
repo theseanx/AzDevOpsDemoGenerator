@@ -241,6 +241,7 @@ namespace ADOGenerator.Services
             List<RestAPI.WorkItemAndTracking.WIMapData> wiMapping = new List<RestAPI.WorkItemAndTracking.WIMapData>();
             //AccountMembers.Account accountMembers = new AccountMembers.Account();
             model.accountUsersForWi = new List<string>();
+            model.Parameters = new Dictionary<string, string>();
             websiteUrl = model.websiteUrl;
             projectName = model.ProjectName;
             adoAuthScheme = model.adoAuthScheme;
@@ -416,7 +417,7 @@ namespace ADOGenerator.Services
             //get project id after successfull in VSTS
             model.Environment.ProjectId = objProject.GetProjectIdByName(model.ProjectName);
             model.Environment.ProjectName = model.ProjectName;
-
+            GetServiceEndPointCredentials(model);
             // Fork Repo
             //if (model.GitHubFork && model.GitHubToken != null)
             //{
@@ -842,6 +843,64 @@ namespace ADOGenerator.Services
             return true;
         }
 
+        private void GetServiceEndPointCredentials(Project model)
+        {
+            try
+            {
+                Init init = new Init();
+                if (model.TemplateName.ToLower() == "bikesharing360")
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the User ID : ");
+                    Console.ResetColor();
+                    string bikeSharing360username = Console.ReadLine();
+                    model.Parameters["BikeSharing360UserID"] = bikeSharing360username;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the Password : ");
+                    Console.ResetColor();
+                    string bikeSharing360password = init.ReadSecret();
+                    model.Parameters["BikeSharing360Password"] = bikeSharing360password;
+                }
+                else if (model.TemplateName.ToLower() == "contososhuttle" || model.TemplateName.ToLower() == "contososhuttle2")
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the User ID : ");
+                    Console.ResetColor();
+                    string contosousername = Console.ReadLine();
+                    model.Parameters["ContosoUserID"] = contosousername;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the Password : ");
+                    Console.ResetColor();
+                    string contosopassword = init.ReadSecret();
+                    model.Parameters["ContosoPassword"] = contosopassword;
+                }
+                else if (model.TemplateName.ToLower() == "sonarqube")
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the SonarQube DNS : ");
+                    Console.ResetColor();
+                    string sonarQubeDNS = Console.ReadLine();
+                    model.SonarQubeDNS = sonarQubeDNS;
+                }
+                else if (model.TemplateName.ToLower() == "octopus")
+                {
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the Octopus URL : ");
+                    Console.ResetColor();
+                    string octopusURL = Console.ReadLine();
+                    model.Parameters["OctopusURL"] = octopusURL;
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.Write("Please enter the API Key : ");
+                    Console.ResetColor();
+                    string apiKey = init.ReadSecret();
+                    model.Parameters["APIkey"] = apiKey;
+                }
+            }
+            catch (Exception ex)
+            {
+                model.id.ErrorId().AddMessage("Error while getting service endpoint credentials: " + ex.Message);
+            }
+        }
 
         bool CreateBranchPolicy(Project model, ADOConfiguration buildConfig)
         {
@@ -1839,26 +1898,26 @@ namespace ADOGenerator.Services
                             jsonCreateService = jsonCreateService.Replace("$username$", username).Replace("$password$", password) // Replaces user name and password with app setting username and password if require[to import soure code to Azure Repos]
                                 .Replace("$GitUserName$", gitUserName).Replace("$GitUserPassword$", gitUserPassword); // Replaces GitUser name and passwords with Demo gen username and password [Just to point build def to respective repo]
                         }
-                        if (model.SelectedTemplate.ToLower() == "bikesharing360")
+                        if (model.TemplateName.ToLower() == "bikesharing360")
                         {
-                            string bikeSharing360username = _configuration["AppSettings:UserID"];
-                            string bikeSharing360password = _configuration["AppSettings:BikeSharing360Password"];
+                            string bikeSharing360username = model.Parameters["BikeSharing360UserID"];
+                            string bikeSharing360password = model.Parameters["BikeSharing360Password"];
                             jsonCreateService = jsonCreateService.Replace("$BikeSharing360username$", bikeSharing360username).Replace("$BikeSharing360password$", bikeSharing360password);
                         }
-                        else if (model.SelectedTemplate.ToLower() == "contososhuttle" || model.SelectedTemplate.ToLower() == "contososhuttle2")
+                        else if (model.TemplateName.ToLower() == "contososhuttle" || model.TemplateName.ToLower() == "contososhuttle2")
                         {
-                            string contosousername = _configuration["AppSettings:ContosoUserID"];
-                            string contosopassword = _configuration["AppSettings:ContosoPassword"];
+                            string contosousername = model.Parameters["ContosoUserID"];
+                            string contosopassword = model.Parameters["ContosoPassword"];
                             jsonCreateService = jsonCreateService.Replace("$ContosoUserID$", contosousername).Replace("$ContosoPassword$", contosopassword);
                         }
-                        else if (model.SelectedTemplate.ToLower() == "sonarqube")
+                        else if (model.TemplateName.ToLower() == "sonarqube")
                         {
                             if (!string.IsNullOrEmpty(model.SonarQubeDNS))
                             {
                                 jsonCreateService = jsonCreateService.Replace("$URL$", model.SonarQubeDNS);
                             }
                         }
-                        else if (model.SelectedTemplate.ToLower() == "octopus")
+                        else if (model.TemplateName.ToLower() == "octopus")
                         {
                             var url = model.Parameters["OctopusURL"];
                             var apiKey = model.Parameters["APIkey"];
