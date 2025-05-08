@@ -1,7 +1,7 @@
 {
   "parameters": {
     "gitSource": {
-      "url": "https://dev.azure.com/vstsdemodata/_git/ContosoAir"
+      "url": "https://dev.azure.com/vstsdemodata/ContosoAir/_git/ContosoAir"
     },
     "serviceEndpointId": "$ContosoAir-tc-code$",
     "deleteServiceEndpointAfterImportIsDone": true

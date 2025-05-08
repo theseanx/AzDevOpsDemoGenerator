@@ -1,7 +1,7 @@
 {
   "parameters": {
     "gitSource": {
-      "url": "https://vstsdemodata.visualstudio.com/_git/Octopus"
+      "url": "https://dev.azure.com/vstsdemodata/Octopus/_git/Octopus"
     },
     "serviceEndpointId": "$Octopus-code$",
     "deleteServiceEndpointAfterImportIsDone": true

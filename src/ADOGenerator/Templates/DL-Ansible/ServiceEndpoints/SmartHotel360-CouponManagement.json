@@ -4,7 +4,7 @@
   },
   "name": "Ansible-code",
   "type": "git",
-  "url": "https://vstsdemodata.visualstudio.com/Ansible/_git/SmartHotel360-CouponManagement",
+  "url": "https://dev.azure.com/vstsdemodata/Ansible/_git/SmartHotel360-CouponManagement",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {

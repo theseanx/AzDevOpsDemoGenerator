@@ -3,7 +3,7 @@
     {
       "gitSource":
         {
-          "url": "https://vstsdemodata.visualstudio.com/Release%20Gates/_git/PartsUnlimited"
+          "url": "https://dev.azure.com/vstsdemodata/Release%20Gates/_git/PartsUnlimited"
         },
       "serviceEndpointId": "$PartsUnlimited-code$",
       "deleteServiceEndpointAfterImportIsDone": true

@@ -3,7 +3,7 @@
     {
       "gitSource":
         {
-          "url": "https://vstsdemodata.visualstudio.com/_git/MyShuttle"
+          "url": "https://dev.azure.com/vstsdemodata/MyShuttle/_git/MyShuttle"
         },
       "serviceEndpointId": "$MyShuttle-code$",
       "deleteServiceEndpointAfterImportIsDone": true

@@ -218,12 +218,12 @@ void HandleNewProjectCreation(IConfiguration configuration, string id)
 
     var templateFolder = string.Empty;
     var confirmedExtension = false;
-    if (!TryGetTemplateDetails(groupwiseTemplates, selectedTemplateName, out templateFolder, out confirmedExtension, id))
+    if (!TryGetTemplateDetails(groupwiseTemplates, selectedTemplateName, out templateFolder, id))
     {
         return;
     }
 
-    ValidateExtensions(templateFolder, id);
+    confirmedExtension = ValidateExtensions(templateFolder, id);
 
     var (accessToken, organizationName, authScheme) = AuthenticateUser(init, id);
     if (string.IsNullOrWhiteSpace(accessToken) || string.IsNullOrWhiteSpace(organizationName)) return;
@@ -541,11 +541,9 @@ string GetValidProjectName(Init init, string id)
     } while (string.IsNullOrWhiteSpace(projectName));
     return projectName;
 }
-
-bool TryGetTemplateDetails(JToken groupwiseTemplates, string selectedTemplateName, out string templateFolder, out bool confirmedExtension, string id)
+bool TryGetTemplateDetails(JToken groupwiseTemplates, string selectedTemplateName, out string templateFolder, string id)
 {
     templateFolder = string.Empty;
-    confirmedExtension = false;
 
     foreach (var group in groupwiseTemplates)
     {
@@ -556,20 +554,15 @@ bool TryGetTemplateDetails(JToken groupwiseTemplates, string selectedTemplateNam
         {
             if (template["Name"]?.ToString().Equals(selectedTemplateName, StringComparison.OrdinalIgnoreCase) != true)
                 continue;
-            else
+            templateFolder = template["TemplateFolder"]?.ToString();
+            var templateFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", templateFolder);
+            if (!Directory.Exists(templateFolderPath))
             {
-                templateFolder = template["TemplateFolder"]?.ToString();
-                var templateFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Templates", templateFolder);
-
-                if (!Directory.Exists(templateFolderPath))
-                {
-                    id.ErrorId().AddMessage($"Template '{selectedTemplateName}' is not found.");
-                    return false;
-                }
-                id.AddMessage($"Template '{selectedTemplateName}' is present.");
-                return true;
+                id.ErrorId().AddMessage($"Template '{selectedTemplateName}' is not found.");
+                return false;
             }
-
+            id.AddMessage($"Template '{selectedTemplateName}' is present.");
+            return true;
         }
     }
     return false;

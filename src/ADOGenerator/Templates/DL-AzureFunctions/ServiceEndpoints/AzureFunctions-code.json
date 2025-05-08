@@ -4,7 +4,7 @@
   },
   "name": "AzureFunctions-code",
   "type": "git",
-  "url": "https://dev.azure.com/vstsdemodata/_git/AzureFunctions",
+  "url": "https://dev.azure.com/vstsdemodata/AzureFunctions/_git/AzureFunctions",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {

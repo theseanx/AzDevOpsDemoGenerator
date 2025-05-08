@@ -37,12 +37,13 @@ namespace RestAPI.Git
                     {
                         var errorMessage = response.Content.ReadAsStringAsync();
                         string error = Utility.GeterroMessage(errorMessage.Result.ToString());
-                        LastFailureMessage = error ?? $"Unable to import repository - {response.StatusCode} - {response.ReasonPhrase}";
+                        LastFailureMessage = string.IsNullOrEmpty(error) ? $"Unable to import repository - {response.StatusCode} - {response.ReasonPhrase}" : error;
                     }
                 }
             }
             catch (Exception ex)
             {
+                LastFailureMessage = DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + "GetSourceCodeFromGitHub" + "\t" + ex.Message + "\t" + "\n" + ex.StackTrace + "\n";
                 logger.Debug(DateTime.UtcNow.ToString("yyyy-MM-dd HH:mm:ss") + "\t" + "GetSourceCodeFromGitHub" + "\t" + ex.Message + "\t" + "\n" + ex.StackTrace + "\n");
             }
             return false;

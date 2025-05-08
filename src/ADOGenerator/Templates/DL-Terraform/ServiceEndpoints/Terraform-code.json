@@ -4,7 +4,7 @@
   },
   "name": "Terraform-code",
   "type": "git",
-  "url": "https://dev.azure.com/vstsdemodata/_git/Terraform",
+  "url": "https://dev.azure.com/vstsdemodata/Terraform/_git/Terraform",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {

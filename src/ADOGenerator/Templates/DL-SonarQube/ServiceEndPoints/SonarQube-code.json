@@ -2,7 +2,7 @@
     "data": {},
     "name": "SonarQube-code",
     "type": "git",
-    "url": "https://vstsdemodata.visualstudio.com/SonarQube/_git/MyShuttle",
+    "url": "https://dev.azure.com/vstsdemodata/SonarQube/_git/MyShuttle",
     "authorization": {
       "scheme": "UsernamePassword",
       "parameters": {

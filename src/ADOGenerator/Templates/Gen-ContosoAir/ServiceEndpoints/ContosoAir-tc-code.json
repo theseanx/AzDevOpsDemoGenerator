@@ -4,7 +4,7 @@
   },
   "name": "ContosoAir-tc-code",
   "type": "git",
-  "url": "https://dev.azure.com/vstsdemodata/_git/ContosoAir",
+  "url": "https://dev.azure.com/vstsdemodata/ContosoAir/_git/ContosoAir",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {

@@ -4,7 +4,7 @@
   },
   "name": "WebGoat-code",
   "type": "git",
-  "url": "https://dev.azure.com/vstsdemodata/_git/WhiteSource%20Bolt",
+  "url": "https://dev.azure.com/vstsdemodata/WhiteSource%20Bolt/_git/WhiteSource%20Bolt",
   "authorization": {
     "scheme": "UsernamePassword",
     "parameters": {

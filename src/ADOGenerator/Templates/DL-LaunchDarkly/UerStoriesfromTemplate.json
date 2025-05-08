@@ -30,7 +30,7 @@
         "System.History": null
       },
       
-      "url": "https://vstsdemodata.visualstudio.com/_apis/wit/workItems/2051"
+      "url": "https://dev.azure.com/vstsdemodata/_apis/wit/workItems/2051"
     }
   ],
   "HttpStatusCode": 0
