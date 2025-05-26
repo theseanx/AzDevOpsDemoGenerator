@@ -23,6 +23,14 @@
 			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
 		</Content>
 	</ItemGroup>
+	<!-- START - added by Sean -->
+	<ItemGroup> 
+  <None Update="appsettings.json">
+    <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+  </None>
+</ItemGroup>
+<!-- END - added by Sean -->
+
 	<ItemGroup>
 	  <None Remove="Templates\DL-DeploymentGroups\TeamArea.json" />
 	  <None Remove="Templates\DL-DeploymentGroups\Teams\Deployment Group Team\BoardColumns.json" />

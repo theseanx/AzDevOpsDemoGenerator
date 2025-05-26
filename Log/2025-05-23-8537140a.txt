@@ -1,0 +1,8 @@
+
+Enter the option number from the list of options above:
+
+Choose authentication method: 1. Device Login using AD auth 2. Personal Access Token (PAT)
+
+Enter your Azure DevOps organization name:
+
+Enter your Azure DevOps personal access token:

@@ -30,6 +30,10 @@ Ensure you have the following installed on your machine:
      ```sh
      dotnet build
      ```
+     Sean:
+     ```sh
+     dotnet build src/ADOGenerator/ADOGenerator.csproj
+     ```
 
 5. **Run the Project**
    To run the project as a console application:
